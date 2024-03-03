@@ -1,5 +1,7 @@
 <?php 
 
+session_start();
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Grabbing the data
@@ -20,7 +22,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $signupUser->signupUser();
 
     // Get user id
-    $userId = $signupUser->fetchUserId($name);
+    $userId = $signupUser->fetchUserId($email);
     $_SESSION["user_id"] = $userId;
 
     // Redirect to signup page

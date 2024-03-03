@@ -1,5 +1,7 @@
 <?php 
 
+session_start();
+
 class SignUpModel extends Dbh{
     
     protected function checkUser($email) {

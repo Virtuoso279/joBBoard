@@ -116,3 +116,21 @@ VALUES
 ('Security'),
 ('C / C++ / Embedded'),
 ('Gamedev / Unity');
+
+INSERT INTO skills (skill_title)
+VALUES
+('JavaScript'),
+('Java'),
+('.NET'),
+('Python'),
+('PHP'),
+('Node.js'),
+('GitHub'),
+('SQL'),
+('NoSQL'),
+('UI/UX'),
+('MVC'),
+('Postman'),
+('Security'),
+('C/C++/Embedded'),
+('Unity');
