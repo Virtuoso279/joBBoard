@@ -27,9 +27,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Redirect to signup page
     if ($_SESSION["user_type"] === "candidate") {
-        header("Location: ../signup_candidate.php");
+        header("Location: ../candidate/signup_candidate.php");
     } elseif ($_SESSION["user_type"] === "recruiter") {
-        header("Location: ../signup_recruiter.php");
+        header("Location: ../recruiter/signup_recruiter.php");
     } else {
         header("Location: ../index.php?error=invalid_usertype");
         exit();

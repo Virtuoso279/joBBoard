@@ -78,9 +78,9 @@
 </section>
 
 <section>
-    <a href="login.php">Скасувати</a>
+    <a href="#">Скасувати</a>
 </section>
 
 <?php
-    include_once "footer.php";
+    include_once "../footer.php";
 ?>

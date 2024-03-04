@@ -25,8 +25,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['resume'])) {
     $signupUserCandidate->addProfileInfo();
    
     //Redirect to profile page
-    header("Location: ../profile.php");
+    header("Location: ../candidate/profile_candidate.php");
 
 } else {
-    header("Location: ../signup_candidate.php");
+    header("Location: ../candidate/signup_candidate.php");
 }

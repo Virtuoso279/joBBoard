@@ -31,7 +31,7 @@ class SignUpModelCandidate extends Dbh{
             $stmt->execute();  
         } catch (PDOException $e) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=stmtfailed" . $e->getMessage());
+            header("Location: ../candidate/signup_candidate.php?error=stmtfailed" . $e->getMessage());
             exit();            
         } 
     } 
@@ -44,13 +44,13 @@ class SignUpModelCandidate extends Dbh{
 
         if (!$stmt->execute([$category])) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=categorynotfound");
+            header("Location: ../candidate/signup_candidate.php?error=categorynotfound");
             exit();
         }
 
@@ -66,13 +66,13 @@ class SignUpModelCandidate extends Dbh{
 
         if (!$stmt->execute([$english])) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=englishnotfound");
+            header("Location: ../candidate/signup_candidate.php?error=englishnotfound");
             exit();
         }
 
@@ -88,13 +88,13 @@ class SignUpModelCandidate extends Dbh{
 
         if (!$stmt->execute([$experience])) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=experiencenotfound");
+            header("Location: ../candidate/signup_candidate.php?error=experiencenotfound");
             exit();
         }
 
@@ -110,13 +110,13 @@ class SignUpModelCandidate extends Dbh{
 
         if (!$stmt->execute([$country])) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../signup_candidate.php?error=countrynotfound");
+            header("Location: ../candidate/signup_candidate.php?error=countrynotfound");
             exit();
         }
 

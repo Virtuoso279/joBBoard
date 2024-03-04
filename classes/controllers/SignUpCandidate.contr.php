@@ -27,17 +27,17 @@ class SignUpContrCandidate extends SignUpModelCandidate{
 
     public function addProfileInfo() {
         if ($this->isEmptySubmit()) {
-            header("Location: ../signup_candidate.php?error=emptyinput");
+            header("Location: ../candidate/signup_candidate.php?error=emptyinput");
             exit();
         }       
 
         if ($this->invalidResumeFile()) {
-            header("Location: ../signup_candidate.php?error=invalidresumefile");
+            header("Location: ../candidate/signup_candidate.php?error=invalidresumefile");
             exit();
         }      
 
         if ($this->isSalaryNotPositive()) {
-            header("Location: ../signup_candidate.php?error=salarynotpositive");
+            header("Location: ../candidate/signup_candidate.php?error=salarynotpositive");
             exit();
         }
         
