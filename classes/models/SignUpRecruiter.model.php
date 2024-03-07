@@ -53,4 +53,23 @@ class SignUpModelRecruiter extends Dbh{
         return $countryData;
     }
 
+    protected function setUserContacts($userId, $full_name) {                
+        //submit query to database without entered inform
+        $query = "INSERT INTO contacts (full_name, user_id, user_type) VALUES (:full_name, :user_id, :userType);";
+
+        //run query into database
+        $stmt = parent::connect()->prepare($query);       
+
+        $userType = "recruiter";
+        //initialize placeholders
+        $stmt->bindParam(":full_name", $full_name);
+        $stmt->bindParam(":user_id", $userId);
+        $stmt->bindParam(":userType", $userType);
+
+        //after send data that user submitted
+        $stmt->execute();
+
+        $stmt = null;
+    }
+
 }

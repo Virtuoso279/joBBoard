@@ -52,6 +52,7 @@ class SignUpContrCandidate extends SignUpModelCandidate{
         move_uploaded_file($this->resume["tmp_name"], $target_file);
 
         $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $this->category, $this->getRowSkills(), $this->country, $target_file, $this->salary, $this->english, $this->experience, "active");
+        $this->setUserContacts($_SESSION["user_id"], $this->full_name);
     }
     
     private function isEmptySubmit() {

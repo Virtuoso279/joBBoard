@@ -26,6 +26,7 @@ class SignUpContrRecruiter extends SignUpModelRecruiter{
         $this->country = $this->fetchCountryId($this->country);        
 
         $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $this->company, $this->description, $this->country, "active");
+        $this->setUserContacts($_SESSION["user_id"], $this->full_name);
     }
     
     private function isEmptySubmit() {

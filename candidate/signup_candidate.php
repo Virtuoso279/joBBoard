@@ -10,7 +10,7 @@
 
 <section>
     <h3>Реєстрація кандидата</h3>
-    <form action="includes/signup_candidate.inc.php" method="post" enctype="multipart/form-data">
+    <form action="../includes/signup_candidate.inc.php" method="post" enctype="multipart/form-data">
         <label for="full_name">Введіть призвіще та ім’я:</label><br>
         <input type="text" id="full_name" name="full_name" placeholder="Full name"><br>
         <label for="position">Введіть назву посади:</label><br>
@@ -78,7 +78,7 @@
 </section>
 
 <section>
-    <a href="#">Скасувати</a>
+    <a href="../includes/delete_user.inc.php">Скасувати</a>
 </section>
 
 <?php

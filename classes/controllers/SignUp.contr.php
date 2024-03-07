@@ -69,4 +69,13 @@ class SignUpContr extends SignUpModel{
         $userId = $this->getUserId($userEmail);
         return $userId[0]["id"];
     }
+
+    public function cancelReg() {
+        if (isset($_SESSION["user_type"]) && isset($_SESSION["user_id"])) {
+            $this->deleteUser();
+        } else {
+            header("Location: ../index.php?error=undefineduser");
+            exit();
+        }        
+    }
 }

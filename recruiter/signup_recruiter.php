@@ -34,7 +34,7 @@
 </section>
 
 <section>
-    <a href="#">Скасувати</a>
+    <a href="../includes/delete_user.inc.php">Скасувати</a>
 </section>
 
 <?php

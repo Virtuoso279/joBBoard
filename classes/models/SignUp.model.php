@@ -107,4 +107,34 @@ class SignUpModel extends Dbh{
         return $profileData;
     }
 
+    protected function deleteUser() {
+        try {
+            if ($_SESSION["user_type"] === "candidate") {
+                //submit query to database without entered inform
+                $query = "DELETE FROM candidates WHERE id = :user_id;";
+            } elseif ($_SESSION["user_type"] === "recruiter") {
+                //submit query to database without entered inform
+                $query = "DELETE FROM recruiters WHERE id = :user_id;";
+            } else {
+                header("Location: ../index.php?error=invalid_usertype");
+                exit();
+            }
+            
+            //run query into database
+            $stmt = parent::connect()->prepare($query);
+        
+            //initialize placeholders
+            $stmt->bindParam(":user_id", $_SESSION["user_id"]);
+        
+            //after send data that user submitted
+            $stmt->execute();  
+        
+            $stmt = null;
+        } catch (PDOException $e) {
+            $stmt = null;
+            header("Location: ../signup.php?error=stmtfailed" . $e->getMessage());
+            exit();            
+        }
+    }
+
 }
