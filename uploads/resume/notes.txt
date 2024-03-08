@@ -1,0 +1,1 @@
+cd /D d:\VS projects\C#\Labs_KPP\Lab3_Maiboroda

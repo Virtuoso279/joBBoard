@@ -47,7 +47,7 @@ class SignUpContrCandidate extends SignUpModelCandidate{
         $this->country = $this->fetchCountryId($this->country);
 
         //upload file resume
-        $target_dir = 'C:/xampp/htdocs/joBBoard/uploads/';
+        $target_dir = 'C:/xampp/htdocs/joBBoard/uploads/resume';
         $target_file = $target_dir . basename($this->resume["name"]);
         move_uploaded_file($this->resume["tmp_name"], $target_file);
 
@@ -58,7 +58,7 @@ class SignUpContrCandidate extends SignUpModelCandidate{
     private function isEmptySubmit() {
         if (empty($this->full_name) || empty($this->position) || empty($this->category) 
             || empty($this->skills) || empty($this->country) || empty($this->resume) || empty($this->salary)
-            || empty($this->english) || empty($this->experience)) {
+            || empty($this->english) || empty($this->experience) && $this->experience !== "0") {
             return true;
         } else {
             return false;
