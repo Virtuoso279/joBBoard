@@ -61,7 +61,7 @@ CREATE TABLE recruiters (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIME,  
     company_name VARCHAR(100),
     company_photo VARCHAR(100),
-    company_descr VARCHAR(100),
+    company_descr TEXT,
     country_id INT(11),
     user_status VARCHAR(100),
     PRIMARY KEY (id),    

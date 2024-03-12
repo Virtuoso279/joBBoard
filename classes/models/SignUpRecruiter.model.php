@@ -2,13 +2,13 @@
 
 class SignUpModelRecruiter extends Dbh{    
 
-    protected function setUser($userId, $full_name, $position, $company, $description, $country, $status) {       
+    protected function setUser($userId, $full_name, $position, $user_photo, $company, $description, $country, $logo_photo, $status) {       
         
         try {
             //submit query to database without entered inform
-            $query = "UPDATE recruiters SET full_name = :full_name, position = :position, 
+            $query = "UPDATE recruiters SET full_name = :full_name, position = :position, my_photo = :user_photo,
             company_name = :company, company_descr = :description_company, country_id = :country, 
-            user_status = :user_status WHERE id = :userId;";
+            company_photo = :logo_photo, user_status = :user_status WHERE id = :userId;";
 
             //run query into database
             $stmt = parent::connect()->prepare($query);
@@ -16,9 +16,11 @@ class SignUpModelRecruiter extends Dbh{
             //initialize placeholders
             $stmt->bindParam(":full_name", $full_name);
             $stmt->bindParam(":position", $position);
+            $stmt->bindParam(":user_photo", $user_photo);
             $stmt->bindParam(":company", $company);
             $stmt->bindParam(":description_company", $description);
             $stmt->bindParam(":country", $country);
+            $stmt->bindParam(":logo_photo", $logo_photo);
             $stmt->bindParam(":user_status", $status);
             $stmt->bindParam(":userId", $userId);
 

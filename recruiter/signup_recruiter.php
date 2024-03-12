@@ -28,7 +28,8 @@
             <option value="Moldova">Moldova</option>
         </select><br>
         <label for="description">Опис компанії:</label><br>
-        <input type="text" id="description" name="description" placeholder="Description"><br>
+        <textarea name="description" id="description" rows="10" cols="50" placeholder="Description"></textarea><br>
+        <!-- <input type="text" id="description" name="description" placeholder="Description"><br> -->
         <button>Зберегти дані</button>
     </form>
 </section>

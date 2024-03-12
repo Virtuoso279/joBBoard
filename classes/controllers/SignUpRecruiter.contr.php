@@ -23,9 +23,15 @@ class SignUpContrRecruiter extends SignUpModelRecruiter{
             exit();
         }        
         
-        $this->country = $this->fetchCountryId($this->country);        
+        $this->country = $this->fetchCountryId($this->country);  
+        
+        //set default user photo
+        $user_photo = 'C:/xampp/htdocs/joBBoard/img/default_photo.png';
 
-        $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $this->company, $this->description, $this->country, "active");
+        //set default logo photo
+        $logo_photo = 'C:/xampp/htdocs/joBBoard/img/default_logo.png';
+
+        $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $user_photo, $this->company, $this->description, $this->country, $logo_photo, "active");
         $this->setUserContacts($_SESSION["user_id"], $this->full_name);
     }
     

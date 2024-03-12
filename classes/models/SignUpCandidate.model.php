@@ -2,13 +2,13 @@
 
 class SignUpModelCandidate extends Dbh{    
 
-    protected function setUser($userId, $full_name, $position, $category, $skills, $country, $resume_pth, $salary, $english, $experience, $status) {       
+    protected function setUser($userId, $full_name, $position, $category, $skills, $country, $resume_pth, $user_photo, $salary, $english, $experience, $status) {       
         
         try {
             //submit query to database without entered inform
             $query = "UPDATE candidates SET full_name = :full_name, position = :position, 
             category_id = :category, skills = :skills, country_id = :country, resume_path = :resume_pth,
-            salary = :salary, english_id = :english, experience_id = :experience, 
+            photo_path = :user_photo, salary = :salary, english_id = :english, experience_id = :experience, 
             user_status = :user_status WHERE id = :userId;";
 
             //run query into database
@@ -21,6 +21,7 @@ class SignUpModelCandidate extends Dbh{
             $stmt->bindParam(":skills", $skills);
             $stmt->bindParam(":country", $country);
             $stmt->bindParam(":resume_pth", $resume_pth);
+            $stmt->bindParam(":user_photo", $user_photo);
             $stmt->bindParam(":salary", $salary);
             $stmt->bindParam(":english", $english);
             $stmt->bindParam(":experience", $experience);
