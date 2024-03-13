@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     // Running error handlers and user signup
     $loginUser->loginUser();
 
-    // Redirect to signup page
+    // Redirect to profile page
     if ($_SESSION["user_type"] === "candidate") {
         header("Location: ../candidate/profile_candidate.php");
     } elseif ($_SESSION["user_type"] === "recruiter") {

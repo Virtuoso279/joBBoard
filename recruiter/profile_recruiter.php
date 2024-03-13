@@ -1,4 +1,6 @@
 <?php
+    session_start();
+    
     include_once "header_recruiter.php";
 ?>
 
@@ -33,18 +35,10 @@
         <img src="<?php echo $profileData->getPhoto($_SESSION["user_id"]);?>" alt="User photo" width="160" height="100"><br>
         <input type="file" id="photo" name="photo"><br>
         <label for="description">Опис компанії:</label><br>
-        <textarea name="description" id="description" rows="10" cols="50">
-            <?php $profileData->getCompanyDescr($_SESSION["user_id"]);?>
-        </textarea><br>
-        <!-- <input type="text" id="description" name="description" placeholder="Description"><br> -->
+        <textarea name="description" id="description" rows="10" cols="50"><?php $profileData->getCompanyDescr($_SESSION["user_id"]);?></textarea><br>
         <button>Зберегти дані</button>
     </form>
 </section>
-
-<?php 
-    echo $_SESSION["user_id"];
-    echo $_SESSION["user_type"];
-?>
 
 <?php
     include_once "../footer.php";

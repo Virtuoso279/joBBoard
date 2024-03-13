@@ -26,6 +26,22 @@ class ProfileModelRecruiter extends Dbh{
 
             //after send data that user submitted
             $stmt->execute();  
+
+            //change data in contacts table
+            //submit query to database without entered inform
+            $userType = "recruiter";
+            $query = "UPDATE contacts SET full_name = :full_name WHERE user_id = :userId AND user_type = :userType;";
+
+            //run query into database
+            $stmt = parent::connect()->prepare($query);
+
+            //initialize placeholders
+            $stmt->bindParam(":full_name", $full_name);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->bindParam(":userType", $userType);
+
+            //after send data that user submitted
+            $stmt->execute();
         } catch (PDOException $e) {
             $stmt = null;
             header("Location: ../recruiter/profile_recruiter.php?error=stmtfailed" . $e->getMessage());

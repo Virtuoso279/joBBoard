@@ -1,5 +1,4 @@
 <?php
-    session_start();
 
     include "../classes/Dbh.php";
     include "../classes/models/ProfileCandidate.model.php";
@@ -20,7 +19,7 @@
     <div class="topnav">
         <a href="#">Вакансії</a>
         <a href="#">Спілкування</a>
-        <a href="#">Мої контакти</a>
+        <a href="../pages/contacts.php">Мої контакти</a>
     </div>
     <span>
         <?php 
@@ -35,6 +34,6 @@
             }
         ?>
     </span>
-    <a href="profile_candidate.php"><?php echo $profileData->getFullName($_SESSION["user_id"]) ?></a>
+    <a href="../candidate/profile_candidate.php"><?php echo $profileData->getFullName($_SESSION["user_id"]) ?></a>
     <a href="../includes/logout.inc.php">LOGOUT</a>    
 </header>
