@@ -67,8 +67,8 @@
             <input type="radio" id="advanced" name="english" value="Advanced" <?php if ($profileData->getEnglish($_SESSION["user_id"]) == "Advanced") echo 'checked';?>>
             <label for="advanced">Advanced</label><br>
         <p>Досвід роботи:</p>
-            <input type="radio" id="0" name="experience" value="0" <?php if ($profileData->getExperience($_SESSION["user_id"]) == "0") echo 'checked';?>>
-            <label for="0">Без досвіду</label><br>
+            <input type="radio" id="1" name="experience" value="1" <?php if ($profileData->getExperience($_SESSION["user_id"]) == "1") echo 'checked';?>>
+            <label for="1">Без досвіду</label><br>
             <input type="radio" id="6" name="experience" value="6" <?php if ($profileData->getExperience($_SESSION["user_id"]) == "6") echo 'checked';?>>
             <label for="6">Менше 6 місяців</label><br>
             <input type="radio" id="12" name="experience" value="12" <?php if ($profileData->getExperience($_SESSION["user_id"]) == "12") echo 'checked';?>>

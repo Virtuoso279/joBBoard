@@ -17,7 +17,7 @@
 <header>
     <img src="#" alt="logo">
     <div class="topnav">
-        <a href="#">Вакансії</a>
+        <a href="../pages/all_vacancies.php">Вакансії</a>
         <a href="#">Спілкування</a>
         <a href="../pages/contacts.php">Мої контакти</a>
     </div>

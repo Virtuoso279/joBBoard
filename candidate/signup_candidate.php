@@ -61,8 +61,8 @@
             <input type="radio" id="advanced" name="english" value="Advanced">
             <label for="advanced">Advanced</label><br>
         <p>Досвід роботи:</p>
-            <input type="radio" id="0" name="experience" value="0">
-            <label for="0">Без досвіду</label><br>
+            <input type="radio" id="1" name="experience" value="1">
+            <label for="1">Без досвіду</label><br>
             <input type="radio" id="6" name="experience" value="6">
             <label for="6">Менше 6 місяців</label><br>
             <input type="radio" id="12" name="experience" value="12">
