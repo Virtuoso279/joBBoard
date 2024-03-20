@@ -72,6 +72,26 @@ class AllVacanciesModel extends Dbh{
         return $vacancyData;
     }
 
+    protected function grabRecruiterVacancies($recruiterId) {             
+        //submit query to database without entered inform
+        $query = "SELECT * FROM vacancies WHERE recruiter_id = ?;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$recruiterId])) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            return "Empty list";
+        } else {
+            $vacanciesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $vacanciesData;
+        }
+    }
+
     protected function getCategoryId($category) {             
         //submit query to database without entered inform
         $query = "SELECT id FROM categories WHERE category_name = ?;";  

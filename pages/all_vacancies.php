@@ -24,7 +24,7 @@
             if (isset($_SESSION["user_type"]) && $_SESSION["user_type"] === "candidate") {
                 echo '<a href="#">Рекомендовані вакансії</a>';
             } elseif (isset($_SESSION["user_type"]) && $_SESSION["user_type"] === "recruiter") {
-                echo '<a href="#">Мої вакансії</a>';
+                echo '<a href="../recruiter/my_vacancies.php">Мої вакансії</a>';
             }
         ?>
     </div>

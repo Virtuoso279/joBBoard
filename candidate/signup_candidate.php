@@ -52,7 +52,7 @@
         <label for="salary">Введіть зарплатні очікування в $:</label><br>
         <input type="number" id="salary" name="salary" placeholder="Salary"><br>
         <p>Рівень англійської:</p>
-            <input type="radio" id="beginner" name="english" value="Beginner">
+            <input type="radio" id="beginner" name="english" value="Beginner" checked>
             <label for="beginner">Beginner</label><br>
             <input type="radio" id="intermediate" name="english" value="Intermediate">
             <label for="intermediate">Intermediate</label><br>
@@ -61,7 +61,7 @@
             <input type="radio" id="advanced" name="english" value="Advanced">
             <label for="advanced">Advanced</label><br>
         <p>Досвід роботи:</p>
-            <input type="radio" id="1" name="experience" value="1">
+            <input type="radio" id="1" name="experience" value="1" checked>
             <label for="1">Без досвіду</label><br>
             <input type="radio" id="6" name="experience" value="6">
             <label for="6">Менше 6 місяців</label><br>

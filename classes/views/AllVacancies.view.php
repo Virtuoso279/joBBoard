@@ -12,6 +12,11 @@ class AllVacanciesView extends AllVacanciesModel {
         return $vacancyData;
     }
 
+    public function getRecruiterVacancies($recruiterId) {
+        $vacanciesData = $this->grabRecruiterVacancies($recruiterId);
+        return $vacanciesData;
+    }
+
     public function getCategory($vacancy) {
         $categoryName = $this->getCategoryName($vacancy["category_id"]);
         return $categoryName[0]["category_name"];
