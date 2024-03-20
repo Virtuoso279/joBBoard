@@ -105,12 +105,36 @@
 <?php
     $vacancies = new AllVacanciesView();
     if (isset($_SESSION["vacancies"]) && $_SESSION["vacancies"] !== "Not found vacancies") {
-        $vacancies->getFilteredVacancies($_SESSION["vacancies"]);
-        unset($_SESSION["vacancies"]);
+        $vacanciesArray = $_SESSION["vacancies"];
     } elseif (isset($_SESSION["vacancies"]) && $_SESSION["vacancies"] === "Not found vacancies") {
         echo "Not found vacancies";
     } else {
-        $vacancies->getAllVacancies();
+        $vacanciesArray = $vacancies->getAllVacancies();
+    }
+
+    if (isset($vacanciesArray)) {
+        foreach ($vacanciesArray as $vacancy) { ?>
+
+            <section class="card-header">
+                <img src="<?php echo $vacancies->getLogo($vacancy); ?>" alt="Company logo" width="70" height="70">
+                <span><?php echo $vacancies->getCompanyName($vacancy); ?></span>
+                <span><?php echo $vacancies->getCreationData($vacancy); ?></span>
+                <span><?php echo $vacancy["responses"]; ?></span>
+            </section><br>
+            <section class="card-title">
+                <span><?php echo $vacancy["title"]; ?></span>
+                <span><?php echo $vacancies->getEmplType($vacancy); ?></span>
+                <span><?php echo $vacancies->getCountry($vacancy); ?></span>
+                <span><?php echo $vacancies->getExperience($vacancy); ?></span>
+                <span><?php echo $vacancies->getEnglish($vacancy); ?></span>
+            </section>
+            <hr>
+            <p><?php echo $vacancies->getDescription($vacancy); ?></p>
+            <a href="vacancy.php?vacancy_id=<?php echo $vacancy["id"]; ?>">Детальна інформація</a>
+
+            <?php
+            unset($_SESSION["vacancies"]);
+        }
     }
 ?>
 </section>

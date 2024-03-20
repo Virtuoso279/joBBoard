@@ -10,13 +10,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $salary = $_POST["salary"] !== "EmptyValue" ? $_POST["salary"] : null;
     $empl_type = $_POST["empl_type"] !== "EmptyValue" ? $_POST["empl_type"] : null;
 
-    // $category = $_POST["category"];
-    // $country = $_POST["country"];
-    // $english = $_POST["english"];
-    // $experience = $_POST["experience"];
-    // $salary = $_POST["salary"];
-    // $empl_type = $_POST["empl_type"];
-
     // Instantiate AllVacancies class
     require_once "../classes/Dbh.php";
     require_once "../classes/models/AllVacancies.model.php";
