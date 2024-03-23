@@ -61,7 +61,7 @@ class SignUpContrCandidate extends SignUpModelCandidate{
     private function isEmptySubmit() {
         if (empty($this->full_name) || empty($this->position) || empty($this->category) 
             || empty($this->skills) || empty($this->country) || empty($this->resume) || empty($this->salary)
-            || empty($this->english) || empty($this->experience) && $this->experience !== "0") {
+            || empty($this->english) || empty($this->experience) || empty($this->experience)) {
             return true;
         } else {
             return false;

@@ -28,7 +28,7 @@
     }
 
     if ($result === "Empty list") {
-        echo "You don't have any vacancies!";
+        echo "<p>You don't have any vacancies!</p>";
     } else {
         $vacanciesArray = $result;
         foreach ($vacanciesArray as $vacancy) { ?>
