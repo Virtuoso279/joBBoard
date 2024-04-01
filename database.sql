@@ -184,3 +184,43 @@ VALUES
 ('Data Analyst', 'Become a Data Engineer at United Tech and explore technical development', 7, 3, 650, 3, 'PHP,.NET,SQL,NoSQL,Java,Python', 4, 4, 1, "active", 0),
 ('Customer Success Specialist', 'About job We are looking for a responsible (meaning: take responsibility for your words)', 14, 2, 850, 4, 'PHP,.NET,SQL,GitHub,Java,Python', 1, 5, 1, "active", 0),
 ('Senior Full Stack Engineer', 'Усім привіт🖖 Запрошуємо Дніпрян та гостей міста на стажування! Якщо ти хочеш', 7, 3, 850, 7, 'PHP,.NET,SQL,NoSQL,Java,Python', 4, 5, 3, "active", 0);
+
+CREATE TABLE conversations (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIME,  
+    candidate_id INT(11) NOT NULL,
+    recruiter_id INT(11) NOT NULL,
+    vacancy_id INT(11) NOT NULL,
+    not_aproach_cand BOOLEAN,
+    not_aproach_vac BOOLEAN,
+    PRIMARY KEY (id),    
+    FOREIGN KEY (candidate_id) REFERENCES candidates (id),
+    FOREIGN KEY (recruiter_id) REFERENCES recruiters (id),
+    FOREIGN KEY (vacancy_id) REFERENCES vacancies (id)
+);
+
+CREATE TABLE messages (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIME,  
+    conversation_id INT(11) NOT NULL,
+    sender_id INT(11) NOT NULL,
+    body TEXT NOT NULL,
+    is_read BOOLEAN NOT NULL,
+    PRIMARY KEY (id),    
+    FOREIGN KEY (conversation_id) REFERENCES conversations (id)
+);
+
+INSERT INTO conversations (candidate_id, recruiter_id, vacancy_id, not_aproach_cand, not_aproach_vac)
+VALUES
+(15, 7, 35, false, false),
+(20, 7, 35, false, false),
+(15, 7, 42, false, false),
+(20, 7, 42, false, false),
+(15, 14, 40, false, false),
+(20, 14, 40, false, false),
+(15, 14, 38, false, false),
+(20, 14, 36, false, false);
+
+SELECT * FROM conversations, vacancies WHERE candidate_id = 15 AND vacancies.vacancy_status = 'active' AND vacancy_id = vacancies.id ORDER BY conversations.created_at DESC;
+
+UPDATE conversations SET not_aproach_vac = true WHERE id = 2;

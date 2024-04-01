@@ -27,6 +27,7 @@ if (isset($_GET["vacancy_id"])) {
             <img src="<?php echo $vacancies->getLogo($vacancy); ?>" alt="Company logo" width="70" height="70">
             <span><?php echo $vacancies->getRecruiterInfo($vacancy); ?></span>
             <span><?php echo $vacancies->getCompanyName($vacancy); ?></span>
+            <span><?php echo $vacancies->getStatus($vacancy); ?></span>
         </section><br>
         <section class="card-title">
             <span><?php echo $vacancy["title"]; ?></span>

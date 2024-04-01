@@ -86,7 +86,7 @@ if (isset($_GET["vacancy_id"])) {
             <button>Зберегти дані</button>
         </form>
     </section>
-    <a href="../includes/delete_vacancy.inc.php?vacancy_id=<?php echo $_GET["vacancy_id"]; ?>">Видалити вакансію</a>
+    <a href="../includes/delete_vacancy.inc.php?vacancy_id=<?php echo $_GET["vacancy_id"]; ?>">Деактивувати вакансію</a>
     <a href="../recruiter/my_vacancies.php">Скасувати</a>
 <?php
 } else { ?>

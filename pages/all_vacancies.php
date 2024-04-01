@@ -97,7 +97,7 @@
             <option value="4000">Від 3000 до 4000</option>
             <option value="4001">Від 4000 і більше</option>
         </select><br>            
-        <button>Зберегти дані</button>
+        <button>Пошук</button>
     </form>
 </section>
     
@@ -133,8 +133,8 @@
             <a href="vacancy.php?vacancy_id=<?php echo $vacancy["id"]; ?>">Детальна інформація</a>
 
             <?php
-            unset($_SESSION["vacancies"]);
         }
+        unset($_SESSION["vacancies"]);
     }
 ?>
 </section>

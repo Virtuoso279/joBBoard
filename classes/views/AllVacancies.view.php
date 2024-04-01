@@ -84,5 +84,10 @@ class AllVacanciesView extends AllVacanciesModel {
         $skillsArray = explode(",", $vacancy["skills"]);
         return $skillsArray;
     }
+
+    public function getStatus($vacancy) {
+        $status = $vacancy["vacancy_status"] === "active" ? "Активна" : "Неактивна";
+        return $status;
+    }
 }
 

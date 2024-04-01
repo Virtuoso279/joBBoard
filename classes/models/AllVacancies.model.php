@@ -3,7 +3,7 @@
 class AllVacanciesModel extends Dbh{     
 
     protected function grabFilteredVacancies($query, $arrayInput) {
-        $query = $query . " ORDER BY created_at DESC;";
+        $query = $query . " AND vacancy_status = 'active' ORDER BY created_at DESC;";
         $stmt = $this->connect()->prepare($query);
 
         if (count($arrayInput) > 0) {
@@ -30,7 +30,7 @@ class AllVacanciesModel extends Dbh{
 
     protected function grabAllVacancies() {             
         //submit query to database without entered inform
-        $query = "SELECT * FROM vacancies ORDER BY created_at DESC LIMIT 5;";  
+        $query = "SELECT * FROM vacancies WHERE vacancy_status = 'active' ORDER BY created_at DESC LIMIT 5;";  
 
         $stmt = $this->connect()->prepare($query);
 
@@ -74,7 +74,7 @@ class AllVacanciesModel extends Dbh{
 
     protected function grabRecruiterVacancies($recruiterId) {             
         //submit query to database without entered inform
-        $query = "SELECT * FROM vacancies WHERE recruiter_id = ?;";  
+        $query = "SELECT * FROM vacancies WHERE recruiter_id = ? AND vacancy_status = 'active';";  
 
         $stmt = $this->connect()->prepare($query);
 

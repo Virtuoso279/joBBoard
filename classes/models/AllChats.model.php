@@ -1,86 +1,112 @@
 <?php 
 
-class AddVacancyModel extends Dbh{     
+class AllChatsModel extends Dbh{     
 
-    protected function createVacancy($recruiterId, $title, $descriptionV, $category, $skills, $country, $english, $experience, $salary, $empl_type) {
-        //submit query to database without entered inform
-        $vacancyStatus = "active";
-        $responses = 0;
-        $query = "INSERT INTO vacancies (title, vacancy_descr, recruiter_id, english_id, salary, category_id, 
-            skills, experience_id, country_id, empl_type_id, vacancy_status, responses) VALUES (:title, 
-            :descriptionV, :recruiterId, :english, :salary, :category, :skills, :experience, :country, 
-            :empl_type, :vacancyStatus, :responses);";
+    protected function grabFilteredChats($query) {
+        $query = $query . " AND vacancy_id = vacancies.id ORDER BY conversations.created_at DESC;";
+        $stmt = $this->connect()->prepare($query);
 
-        //run query into database
-        $stmt = parent::connect()->prepare($query);
-      
-        //initialize placeholders
-        $stmt->bindParam(":title", $title);
-        $stmt->bindParam(":descriptionV", $descriptionV);
-        $stmt->bindParam(":recruiterId", $recruiterId);
-        $stmt->bindParam(":english", $english);
-        $stmt->bindParam(":salary", $salary);
-        $stmt->bindParam(":category", $category);
-        $stmt->bindParam(":skills", $skills);
-        $stmt->bindParam(":experience", $experience);
-        $stmt->bindParam(":country", $country);
-        $stmt->bindParam(":empl_type", $empl_type);
-        $stmt->bindParam(":vacancyStatus", $vacancyStatus);
-        $stmt->bindParam(":responses", $responses);
-
-        //after send data that user submitted
-        $stmt->execute();
-
-        $stmt = null;
-    }
-
-    protected function changeVacancy($vacancyId, $title, $descriptionV, $category, $skills, $country, $english, $experience, $salary, $empl_type) {       
-        
-        try {
-            //submit query to database without entered inform
-            $query = "UPDATE vacancies SET title = :title, vacancy_descr = :descriptionV, english_id = :english,
-                salary = :salary, category_id = :category, skills = :skills, experience_id = :experience, 
-                country_id = :country, empl_type_id = :empl_type WHERE id = :vacancyId;";
-
-            //run query into database
-            $stmt = parent::connect()->prepare($query);
-
-            //initialize placeholders
-            $stmt->bindParam(":title", $title);
-            $stmt->bindParam(":descriptionV", $descriptionV);
-            $stmt->bindParam(":english", $english);
-            $stmt->bindParam(":salary", $salary);
-            $stmt->bindParam(":category", $category);
-            $stmt->bindParam(":skills", $skills);
-            $stmt->bindParam(":experience", $experience);
-            $stmt->bindParam(":country", $country);
-            $stmt->bindParam(":empl_type", $empl_type);
-            $stmt->bindParam(":vacancyId", $vacancyId);
-
-            //after send data that user submitted
-            $stmt->execute();  
-        } catch (PDOException $e) {
+        if (!$stmt->execute()) {
             $stmt = null;
-            header("Location: ../recruiter/my_vacancies.php?error=stmtfailed" . $e->getMessage());
-            exit();            
-        } 
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            return "Empty search!";
+        } else {
+            $chatsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $chatsData;
+        }
     }
 
-    protected function grabVacancy($vacancyId) {             
+    protected function grabAllChats($userType, $userId) {             
         //submit query to database without entered inform
-        $query = "SELECT * FROM vacancies WHERE id = ?;";  
+        if ($userType === "candidate") {
+            $query = "SELECT *, conversations.id FROM conversations, vacancies WHERE candidate_id = " . $userId . " AND vacancies.vacancy_status = 'active' AND vacancy_id = vacancies.id ORDER BY conversations.created_at DESC;";
+        }  elseif ($userType === "recruiter") {
+            $query = "SELECT *, conversations.id FROM conversations, vacancies WHERE conversations.recruiter_id = " . $userId . " AND vacancies.vacancy_status = 'active' AND vacancy_id = vacancies.id ORDER BY conversations.created_at DESC;";
+        }
 
         $stmt = $this->connect()->prepare($query);
 
-        if (!$stmt->execute([$vacancyId])) {
+        if (!$stmt->execute()) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=vacancynotfound");
+            header("Location: ../pages/all_chats.php?error=chatsnotfound");
+            exit();
+        }
+
+        $chatsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $chatsData;
+    }
+
+    protected function grabRecruiterVacancies($recruiterId) {             
+        //submit query to database without entered inform
+        $query = "SELECT * FROM vacancies WHERE recruiter_id = ? AND vacancy_status = 'active';";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$recruiterId])) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            return "Empty list";
+        } else {
+            $vacanciesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $vacanciesData;
+        }
+    }
+
+    protected function getUser($userType, $userId) {
+        //submit query to database without entered inform
+        if ($userType === "candidate") {
+            $query = "SELECT * FROM candidates WHERE id = ?;";
+        } elseif ($userType === "recruiter") {
+            $query = "SELECT * FROM recruiters WHERE id = ?;";
+        }  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$userId])) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=candidatenotfound");
+            exit();
+        }
+
+        $profileData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $profileData;
+    }
+
+    protected function getVacancyId($vacancy) {             
+        //submit query to database without entered inform
+        $query = "SELECT id FROM vacancies WHERE title = ?;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$vacancy])) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=vacancynotfound");
             exit();
         }
 
@@ -198,6 +224,28 @@ class AddVacancyModel extends Dbh{
         return $emplTypeData;
     }
 
+    protected function getCompanyInfo($recruiterId) {             
+        //submit query to database without entered inform
+        $query = "SELECT company_name, full_name, position FROM recruiters WHERE id = ?;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$recruiterId])) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=recruiternotfound");
+            exit();
+        }
+
+        $companyData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $companyData;
+    }
+
     protected function getEmplTypeName($emplTypeId) {             
         //submit query to database without entered inform
         $query = "SELECT employment_type FROM empltypes WHERE id = ?;";  
@@ -306,27 +354,5 @@ class AddVacancyModel extends Dbh{
 
         $countryData = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $countryData;
-    }
-
-    protected function removeVacancy($vacancyId) {
-        try {
-            //submit query to database without entered inform
-            $query = "UPDATE vacancies SET vacancy_status = :v_status WHERE id = :vacancyId;";
-
-            //run query into database
-            $stmt = parent::connect()->prepare($query);
-
-            $status = "inactive";
-            //initialize placeholders
-            $stmt->bindParam(":v_status", $status);
-            $stmt->bindParam(":vacancyId", $vacancyId);
-
-            //after send data that user submitted
-            $stmt->execute();  
-        } catch (PDOException $e) {
-            $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=stmtfailed" . $e->getMessage());
-            exit();            
-        } 
     }
 }
