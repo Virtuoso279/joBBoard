@@ -56,11 +56,9 @@ if (isset($_GET["vacancy_id"])) {
 ?>
         <section class="make-response">
             <h3>Зробити відгук</h3>
-            <form action="#" method="post">
+            <form action="../includes/chat.inc.php?chat_id=unknown&vacancy_id=<?php echo $vacancy["id"]; ?>" method="post">
                 <label for="cover-letter">Мотиваційний лист:</label><br>
-                <textarea name="cover_letter" id="cover-letter" rows="10" cols="50" placeholder="Message"></textarea><br>
-                <label for="resume">Файл резюме:</label><br>
-                <input type="file" id="resume" name="resume"><br>
+                <textarea name="message" id="message" rows="10" cols="50" placeholder="Message"></textarea><br>
                 <button>Відгукнутися</button>
             </form>
             <a href="all_vacancies.php">Назад</a>

@@ -78,7 +78,7 @@
             <hr>
             <section class="message">
                 <p>Last message Last message Last message Last message Last message Last message</p>
-                <a href="#">Перейти в чат</a>
+                <a href="chat.php?chat_id=<?php echo $chat["id"]; ?>">Перейти в чат</a>
             </section>
             <?php
         }

@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once "../classes/models/AllChats.model.php";
     require_once "../classes/controllers/AllChats.contr.php";
 
-    // Create user object
+    // Create AllChats object
     $allChatsObject = new AllChatsContr($vacancy, $type1, $type2);
 
     if (isset($_SESSION["user_type"]) && $_SESSION["user_type"] === "candidate") {
@@ -32,8 +32,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $allChatsObject->getChatsListRecruiter();
     }
 
-    // Redirect to Profile page
-    header("Location: ../pages/all_chats.php");
+    // Redirect to all chats page
+    header("Location: ../pages/all_chats.php?error=none");
 
 } else {
     header("Location: ../pages/all_chats.php");

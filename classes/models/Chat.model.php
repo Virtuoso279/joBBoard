@@ -1,69 +1,70 @@
 <?php 
 
-class AllChatsModel extends Dbh{     
+class ChatModel extends Dbh{    
 
-    protected function grabFilteredChats($query) {
-        $query = $query . " AND vacancy_id = vacancies.id ORDER BY conversations.created_at DESC;";
-        $stmt = $this->connect()->prepare($query);
+    protected function createMessage($chatId, $senderId, $messageBody) {
+        //submit query to database without entered inform
+        $isRead = false;
+        $query = "INSERT INTO messages (conversation_id, sender_id, body, is_read) VALUES (:chatId, :senderId, :messageBody, :isRead);";
 
-        if (!$stmt->execute()) {
-            $stmt = null;
-            header("Location: ../pages/all_chats.php?error=stmtfailed");
-            exit();
-        }
+        //run query into database
+        $stmt = parent::connect()->prepare($query);
+      
+        //initialize placeholders
+        $stmt->bindParam(":chatId", $chatId);
+        $stmt->bindParam(":senderId", $senderId);
+        $stmt->bindParam(":messageBody", $messageBody);
+        $stmt->bindParam(":isRead", $isRead);
 
-        if ($stmt->rowCount() == 0) {
-            return "Empty search!";
-        } else {
-            $chatsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $chatsData;
-        }
+        //after send data that user submitted
+        $stmt->execute();
+
+        $stmt = null;
     }
 
-    protected function grabAllChats($userType, $userId) {             
+    protected function createChat($vacancyId, $candidateId, $recruiterId) {
         //submit query to database without entered inform
-        if ($userType === "candidate") {
-            $query = "SELECT *, conversations.id FROM conversations, vacancies WHERE candidate_id = " . $userId . " AND vacancies.vacancy_status = 'active' AND vacancy_id = vacancies.id ORDER BY conversations.created_at DESC;";
-        }  elseif ($userType === "recruiter") {
-            $query = "SELECT *, conversations.id FROM conversations, vacancies WHERE conversations.recruiter_id = " . $userId . " AND vacancies.vacancy_status = 'active' AND vacancy_id = vacancies.id ORDER BY conversations.created_at DESC;";
-        }
+        $notAproachCand = false;
+        $notAproachVac = false;
+        $query = "INSERT INTO conversations (candidate_id, recruiter_id, vacancy_id, not_aproach_cand,
+            not_aproach_vac) VALUES (:candidateId, :recruiterId, :vacancyId, :notAproachCand, :notAproachVac);";
 
-        $stmt = $this->connect()->prepare($query);
+        //run query into database
+        $stmt = parent::connect()->prepare($query);
+      
+        //initialize placeholders
+        $stmt->bindParam(":candidateId", $candidateId);
+        $stmt->bindParam(":recruiterId", $recruiterId);
+        $stmt->bindParam(":vacancyId", $vacancyId);
+        $stmt->bindParam(":notAproachCand", $notAproachCand);
+        $stmt->bindParam(":notAproachVac", $notAproachVac);
 
-        if (!$stmt->execute()) {
-            $stmt = null;
-            header("Location: ../pages/all_chats.php?error=stmtfailed");
-            exit();
-        }
+        //after send data that user submitted
+        $stmt->execute();
 
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            header("Location: ../pages/all_chats.php?error=chatsnotfound");
-            exit();
-        }
-
-        $chatsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $chatsData;
+        $stmt = null;
     }
 
-    protected function grabRecruiterVacancies($recruiterId) {             
+    protected function getChatMessages($chatId) {
         //submit query to database without entered inform
-        $query = "SELECT * FROM vacancies WHERE recruiter_id = ? AND vacancy_status = 'active';";  
+        $query = "SELECT * FROM messages WHERE conversation_id = ? ORDER BY created_at;";  
 
         $stmt = $this->connect()->prepare($query);
 
-        if (!$stmt->execute([$recruiterId])) {
+        if (!$stmt->execute([$chatId])) {
             $stmt = null;
             header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
-            return "Empty list";
-        } else {
-            $vacanciesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $vacanciesData;
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=messagesnotfound");
+            exit();
         }
+
+        $messagesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $messagesData;
     }
 
     protected function getUser($userType, $userId) {
@@ -92,13 +93,53 @@ class AllChatsModel extends Dbh{
         return $profileData;
     }
 
-    protected function getVacancyId($vacancy) {             
+    protected function searchChat($chatId) {             
         //submit query to database without entered inform
-        $query = "SELECT id FROM vacancies WHERE title = ?;";  
+        $query = "SELECT *, conversations.id FROM conversations, vacancies WHERE conversations.vacancy_id = vacancies.id AND conversations.id = " . $chatId . ";";
 
         $stmt = $this->connect()->prepare($query);
 
-        if (!$stmt->execute([$vacancy])) {
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            return false;
+        } else {
+            $chatData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $chatData;
+        }
+    }
+
+    protected function searchVacancy($vacancyId) {             
+        //submit query to database without entered inform
+        $query = "SELECT * FROM vacancies WHERE id = " . $vacancyId . ";";
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            return false;
+        } else {
+            $vacancyData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $vacancyData;
+        }
+    }
+
+    protected function getChatId($candidateId, $recruiterId, $vacancyId) {             
+        //submit query to database without entered inform
+        $query = "SELECT id FROM conversations WHERE candidate_id = ? AND recruiter_id = ? AND vacancy_id = ?;";
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$candidateId, $recruiterId, $vacancyId])) {
             $stmt = null;
             header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
@@ -106,12 +147,12 @@ class AllChatsModel extends Dbh{
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../pages/all_chats.php?error=vacancynotfound");
+            header("Location: ../pages/all_chats.php?error=chatidnotfound");
             exit();
         }
 
-        $vacancyData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $vacancyData;
+        $chatData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $chatData;
     }
 
     protected function getCompanyInfo($recruiterId) {             
