@@ -37,13 +37,11 @@ class AllChatsModel extends Dbh{
         }
 
         if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            header("Location: ../pages/all_chats.php?error=chatsnotfound");
-            exit();
+            return "empty list";
+        } else {
+            $chatsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $chatsData;
         }
-
-        $chatsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $chatsData;
     }
 
     protected function grabRecruiterVacancies($recruiterId) {             
@@ -90,6 +88,48 @@ class AllChatsModel extends Dbh{
 
         $profileData = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $profileData;
+    }
+
+    protected function getChatMessage($chatId) {
+        //submit query to database without entered inform
+        $query = "SELECT * FROM messages WHERE conversation_id = ? ORDER BY created_at DESC;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$chatId])) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=messagesnotfound");
+            exit();
+        }
+
+        $messageData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $messageData;
+    }
+
+    protected function searchChat($chatId) {             
+        //submit query to database without entered inform
+        $query = "SELECT * FROM conversations WHERE conversations.id = " . $chatId . ";";
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            return false;
+        } else {
+            $chatData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $chatData;
+        }
     }
 
     protected function getVacancyId($vacancy) {             

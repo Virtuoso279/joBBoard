@@ -155,6 +155,55 @@ class ChatModel extends Dbh{
         return $chatData;
     }
 
+    protected function changeStatusUser($userId, $status) {       
+        
+        try {
+            //submit query to database without entered inform
+            $query = "UPDATE candidates SET user_status = :user_status WHERE id = :userId;";
+
+            //run query into database
+            $stmt = parent::connect()->prepare($query);
+
+            //initialize placeholders
+            $stmt->bindParam(":user_status", $status);
+            $stmt->bindParam(":userId", $userId);
+
+            //after send data that user submitted
+            $stmt->execute();  
+
+        } catch (PDOException $e) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed" . $e->getMessage());
+            exit();            
+        } 
+    }
+
+    protected function changeStatusChat($chatId, $type) {       
+        
+        try {
+            //submit query to database without entered inform
+            if ($type === "vacancynot") {
+                $query = "UPDATE conversations SET not_aproach_vac = true WHERE id = :chatId;";
+            } elseif ($type === "candidatenot") {
+                $query = "UPDATE conversations SET not_aproach_cand = true WHERE id = :chatId;";
+            }
+
+            //run query into database
+            $stmt = parent::connect()->prepare($query);
+
+            //initialize placeholders
+            $stmt->bindParam(":chatId", $chatId);
+
+            //after send data that user submitted
+            $stmt->execute();  
+
+        } catch (PDOException $e) {
+            $stmt = null;
+            header("Location: ../pages/all_chats.php?error=stmtfailed" . $e->getMessage());
+            exit();            
+        } 
+    }
+
     protected function getCompanyInfo($recruiterId) {             
         //submit query to database without entered inform
         $query = "SELECT company_name, full_name, position FROM recruiters WHERE id = ?;";  
@@ -163,13 +212,13 @@ class ChatModel extends Dbh{
 
         if (!$stmt->execute([$recruiterId])) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=recruiternotfound");
+            header("Location: ../pages/all_chats.php?error=recruiternotfound");
             exit();
         }
 
@@ -185,13 +234,13 @@ class ChatModel extends Dbh{
 
         if (!$stmt->execute([$emplTypeId])) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=empltypenotfound");
+            header("Location: ../pages/all_chats.php?error=empltypenotfound");
             exit();
         }
 
@@ -207,13 +256,13 @@ class ChatModel extends Dbh{
 
         if (!$stmt->execute([$categoryId])) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=categorynotfound");
+            header("Location: ../pages/all_chats.php?error=categorynotfound");
             exit();
         }
 
@@ -229,13 +278,13 @@ class ChatModel extends Dbh{
 
         if (!$stmt->execute([$englishId])) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=englishnotfound");
+            header("Location: ../pages/all_chats.php?error=englishnotfound");
             exit();
         }
 
@@ -251,13 +300,13 @@ class ChatModel extends Dbh{
 
         if (!$stmt->execute([$experienceId])) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=experiencenotfound");
+            header("Location: ../pages/all_chats.php?error=experiencenotfound");
             exit();
         }
 
@@ -273,13 +322,13 @@ class ChatModel extends Dbh{
 
         if (!$stmt->execute([$countryId])) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            header("Location: ../pages/all_chats.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../pages/all_vacancies.php?error=countrynotfound");
+            header("Location: ../pages/all_chats.php?error=countrynotfound");
             exit();
         }
 

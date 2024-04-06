@@ -12,6 +12,22 @@ class AllChatsView extends AllChatsModel {
         return $vacanciesData;
     }
 
+    public function getMessage($chatId) {
+        $chatInfo = $this->getChatMessage($chatId);
+        return $chatInfo;
+    }
+
+    public function getUserName($chatId, $senderId) {
+        $chatInfo = $this->searchChat($chatId);
+        if ($chatInfo[0]["candidate_id"] == $senderId) {
+            $userType = "candidate";
+        } elseif ($chatInfo[0]["recruiter_id"] == $senderId) {
+            $userType = "recruiter";
+        }
+        $profileInfo = $this->getUser($userType, $senderId);
+        return $profileInfo[0]["full_name"];
+    }
+
     public function getPhoto($userType, $userId) {
         $profileInfo = $this->getUser($userType, $userId);
         if ($userType === "candidate") {

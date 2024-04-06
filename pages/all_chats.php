@@ -48,7 +48,7 @@
         $chatsArray = $chats->getAllChats($_SESSION["user_type"], $_SESSION["user_id"]);
     }
 
-    if (isset($chatsArray)) {
+    if (isset($chatsArray) && $chatsArray !== "empty list") {
         foreach ($chatsArray as $chat) { 
             if ($_SESSION["user_type"] === "candidate") {  ?>
                 <section class="recruiter-info">
@@ -77,13 +77,17 @@
             </section>
             <hr>
             <section class="message">
-                <p>Last message Last message Last message Last message Last message Last message</p>
+                <?php $message = $chats->getMessage($chat["id"]); ?>
+                <span><?php echo $chats->getUserName($chat["id"], $message[0]["sender_id"]); ?> :</span>
+                <span><?php echo $message[0]["body"]; ?></span><br>
                 <a href="chat.php?chat_id=<?php echo $chat["id"]; ?>">Перейти в чат</a>
             </section>
             <?php
         }
         unset($_SESSION["chats"]);
-    }
+    } elseif (isset($chatsArray) && $chatsArray === "empty list") {
+        echo "<p>You don't have any chats</p>";
+    }   
 
 ?>
 </section>

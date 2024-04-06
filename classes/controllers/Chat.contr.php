@@ -70,4 +70,12 @@ class ChatContr extends ChatModel{
     public function fetchChatId() {
         return $this->chatId;
     }
+
+    public function setUserStatus($userId, $status) {
+        $this->changeStatusUser($userId, $status);
+    }
+
+    public function setChatStatus($chatId, $type) {
+        $this->changeStatusChat($chatId, $type);
+    }
 }

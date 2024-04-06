@@ -52,11 +52,11 @@ if (isset($_GET["chat_id"])) {
         <span><?php echo $chatObject->getEnglish($chat); ?></span>
         <?php
         if ($_SESSION["user_type"] === "candidate") {  ?>
-            <a href="#">Повідомити про найм</a>
-            <a href="#">Відмова від вакансії</a>
+            <a href="../includes/change_status.inc.php?type=stopsearch&userId=<?php echo $_SESSION["user_id"]; ?>&chatId=<?php echo $chat["id"]; ?>">Повідомити про найм</a>
+            <a href="../includes/change_status.inc.php?type=vacancynot&chatId=<?php echo $chat["id"]; ?>">Відмова від вакансії</a>
             <?php
         } elseif ($_SESSION["user_type"] === "recruiter") {  ?>
-            <a href="#">Кандидат не підійшов</a>
+            <a href="../includes/change_status.inc.php?type=candidatenot&chatId=<?php echo $chat["id"]; ?>">Кандидат не підійшов</a>
         <?php
         } ?>
     </section>
@@ -84,8 +84,10 @@ if (isset($_GET["chat_id"])) {
             <a href="all_chats.php">Назад</a>
         </section>
     <?php    
+    } elseif ($chat["not_aproach_cand"]) {
+        echo '<p>Кандидат не підійшов рекрутеру</p>';
     } else {
-        echo '<p>Кандидат не підійшов</p>';
+        echo '<p>Кандидат відмовився від вакансії</p>';
     } ?>
 
 <?php
