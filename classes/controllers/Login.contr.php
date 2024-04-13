@@ -10,20 +10,35 @@ class LoginContr extends LoginModel{
     }
 
     public function loginUser() {
+        session_start();
+        $errors = [];
+
         if ($this->isEmptySubmit()) {
-            header("Location: ../index.php?error=emptyinput");
-            exit();
+            $errors["emptyInput"] = "Fill in all fields!";
+            // header("Location: ../index.php?error=emptyinput");
+            // exit();
         }
 
         if ($this->invalidEmail()) {
-            header("Location: ../index.php?error=invalidemail");
-            exit();
+            $errors["invalidEmail"] = "Invalid email used!";
         }     
 
         $isFound = $this->getUser($this->email, $this->psw);
         if (!$isFound) {
-            header("Location: ../index.php?error=usernotfoundconstr");
-            exit();
+            $errors["userNotFound"] = "User wasn't registered!";
+        }
+
+        if ($errors) {
+            $_SESSION["errors_login"] = $errors; 
+
+            $loginData = [
+                "email" => $this->email,
+                "pwd" => $this->psw
+            ];
+            $_SESSION["login_data"] = $loginData;
+
+            header("Location: ../login.php"); 
+            die();
         }
     }
     
@@ -56,6 +71,5 @@ class LoginContr extends LoginModel{
         } else {
             return true;
         }      
-
     }
 }

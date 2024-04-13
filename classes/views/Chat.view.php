@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 class ChatView extends ChatModel {
 
     public function getChat($chatId) {
@@ -111,6 +113,29 @@ class ChatView extends ChatModel {
     public function getStatus($vacancy) {
         $status = $vacancy["vacancy_status"] === "active" ? "Активна" : "Неактивна";
         return $status;
+    }
+
+    public function messageInput() {
+
+        echo '<label for="message">Надіслати повідомлення:</label><br>';
+    
+        if (isset($_SESSION["errors_chat"]["email"])) {        
+            echo '<textarea name="message" id="message" rows="10" cols="50" placeholder="Message">' . $_SESSION["chat_data"]["message"] . '</textarea><br>';
+        } else {
+            echo '<textarea name="message" id="message" rows="10" cols="50" placeholder="Message"></textarea><br>';
+        }
+    }
+    
+    public function checkChatErrors() {
+        if (isset($_SESSION["errors_chat"])) {
+            $errors = $_SESSION["errors_chat"];
+    
+            foreach ($errors as $error) {
+                echo '<p class="form-error">' . $error . '</p>';
+            }
+    
+            unset($_SESSION["errors_chat"]);
+        }
     }
 }
 

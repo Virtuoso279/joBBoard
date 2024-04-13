@@ -77,8 +77,10 @@ if (isset($_GET["chat_id"])) {
     if (!$chat["not_aproach_cand"] && !$chat["not_aproach_vac"]) { ?>
         <section class="send-message">
             <form action="../includes/chat.inc.php?chat_id=<?php echo $chat["id"]; ?>&vacancy_id=<?php echo $chat["vacancy_id"]; ?>" method="post">
-                <label for="message">Надіслати повідомлення:</label><br>
-                <textarea name="message" id="message" rows="10" cols="50" placeholder="Message"></textarea><br>
+                <?php
+                    $chatObject->messageInput();
+                    $chatObject->checkChatErrors();
+                ?>
                 <button>Надіслати</button>
             </form>
             <a href="all_chats.php">Назад</a>

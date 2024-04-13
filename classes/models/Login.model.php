@@ -25,10 +25,13 @@ class LoginModel extends Dbh{
         $pwdHashed = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $checkPwd = password_verify($pwd, $pwdHashed[0]["pwd"]);
 
+        $errors = [];
+
         if (!$checkPwd) {
             $stmt = null;
-            header("Location: ../index.php?error=wrongpassword");
-            exit();   
+            $errors["wrongPassword"] = "Wrong password!";
+            // header("Location: ../index.php?error=wrongpassword");
+            // exit();   
         } else {
             $query = "SELECT * FROM " . $userType . " WHERE email = ? AND pwd = ?;";
             $stmt = parent::connect()->prepare($query);
@@ -42,20 +45,25 @@ class LoginModel extends Dbh{
 
             if ($stmt->rowCount() == 0) {
                 $stmt = null;
-                header("Location: ../index.php?error=usernotfoundmodel");
-                exit();   
-            }
+                $errors["userNotFound"] = "User not found!";
+                // header("Location: ../index.php?error=usernotfound");
+                // exit();   
+            } else {
+                $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $_SESSION["user_id"] = $user[0]["id"];
+                //change name of user type
+                $_SESSION["user_type"] = substr($userType, 0, -1);
 
-            $_SESSION["user_id"] = $user[0]["id"];
-            //change name of user type
-            $_SESSION["user_type"] = substr($userType, 0, -1);
-
-            $stmt = null;
+                $stmt = null;
+                return true;
+            }    
         }
 
-        $stmt = null;
-        return true;
+        if ($errors) {
+            $_SESSION["errors_login"] = $errors; 
+            header("Location: ../login.php"); 
+            die();
+        }
     }  
 }

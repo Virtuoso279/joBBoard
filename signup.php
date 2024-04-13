@@ -8,15 +8,24 @@
     <img src="#" alt="logo">    
 </header>
 
+<?php
+    include "classes/views/SignUp.view.php";
+?>
+
 <section>
     <h3>Реєстрація</h3>
     <form action="includes/signup.inc.php" method="post">
-        <input type="text" name="email" placeholder="Email">
+        <?php
+            $signupObject = new SignUpView();
+            $signupObject->signupInput();
+            $signupObject->checkSignupErrors();
+        ?>
+        <!-- <input type="text" name="email" placeholder="Email">
         <input type="password" name="pwd" placeholder="Password">
         <input type="radio" id="recruiter" name="userType" value="recruiter">
         <label for="recruiter">Я роботодавець</label>
         <input type="radio" id="candidate" name="userType" value="candidate">
-        <label for="candidate">Я кандидат</label>
+        <label for="candidate">Я кандидат</label> -->
         <button>Далі</button>
     </form>
 </section>

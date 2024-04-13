@@ -14,9 +14,13 @@ class ChatContr extends ChatModel{
     }
 
     public function sendInExistChat() {
+        session_start();
+        $errors = [];
+
         if ($this->isEmptySubmit()) {
-            header("Location: ../pages/chat.php?chat_id=" . $this->chatId . "&error=emptyinput");
-            exit();
+            $errors["emptyInput"] = "Empty submit!";
+            // header("Location: ../pages/chat.php?chat_id=" . $this->chatId . "&error=emptyinput");
+            // exit();
         }             
 
         if (!$this->isChatExist($this->chatId)) {
@@ -24,13 +28,29 @@ class ChatContr extends ChatModel{
             exit();
         }
 
-        $this->createMessage($this->chatId, $this->senderId, $this->message);
+        if ($errors) {
+            $_SESSION["errors_chat"] = $errors; 
+
+            $chatData = [
+                "message" => $this->message
+            ];
+            $_SESSION["chat_data"] = $chatData;
+
+            header("Location: ../pages/chat.php?chat_id=" . $this->chatId); 
+            die();
+        } else {
+            $this->createMessage($this->chatId, $this->senderId, $this->message);
+        }
     }
 
     public function sendInNewChat() {
+        session_start();
+        $errors = [];
+
         if ($this->isEmptySubmit()) {
-            header("Location: ../pages/all_vacancies.php?error=emptyinput");
-            exit();
+            $errors["emptyInput"] = "Empty submit!";
+            // header("Location: ../pages/all_vacancies.php?error=emptyinput");
+            // exit();
         }             
 
         if (!$this->isVacancyExist($this->vacancyId)) {
@@ -38,15 +58,27 @@ class ChatContr extends ChatModel{
             exit();
         }
 
-        $vacancyInfo = $this->searchVacancy($this->vacancyId);
-        $recruiterId = $vacancyInfo[0]["recruiter_id"];
+        if ($errors) {
+            $_SESSION["errors_chat"] = $errors; 
 
-        $this->createChat($this->vacancyId, $this->senderId, $recruiterId);
+            $chatData = [
+                "message" => $this->message
+            ];
+            $_SESSION["chat_data"] = $chatData;
 
-        $chatInfo = $this->getChatId($this->senderId, $recruiterId, $this->vacancyId);
-        $this->chatId = $chatInfo[0]["id"];
+            header("Location: ../pages/all_vacancies.php"); 
+            die();
+        } else {
+            $vacancyInfo = $this->searchVacancy($this->vacancyId);
+            $recruiterId = $vacancyInfo[0]["recruiter_id"];
 
-        $this->createMessage($this->chatId, $this->senderId, $this->message);
+            $this->createChat($this->vacancyId, $this->senderId, $recruiterId);
+
+            $chatInfo = $this->getChatId($this->senderId, $recruiterId, $this->vacancyId);
+            $this->chatId = $chatInfo[0]["id"];
+
+            $this->createMessage($this->chatId, $this->senderId, $this->message);
+        }
     }
 
     private function isEmptySubmit() {
