@@ -26,36 +26,56 @@ class SignUpContrCandidate extends SignUpModelCandidate{
     }
 
     public function addProfileInfo() {
+        $errors = [];
+
         if ($this->isEmptySubmit()) {
-            header("Location: ../candidate/signup_candidate.php?error=emptyinput");
-            exit();
+            $errors["emptyInput"] = "Fill in all fields!";
+            // header("Location: ../candidate/signup_candidate.php?error=emptyinput");
+            // exit();
         }       
 
         if ($this->invalidResumeFile()) {
-            header("Location: ../candidate/signup_candidate.php?error=invalidresumefile");
-            exit();
+            $errors["invalidResumeFile"] = "Invalid resume file type choosed!";
         }      
 
         if ($this->isSalaryNotPositive()) {
-            header("Location: ../candidate/signup_candidate.php?error=salarynotpositive");
-            exit();
+            $errors["salaryNotPositive"] = "Salary must be positive number!";
         }
-        
-        $this->category = $this->fetchCategoryId($this->category);
-        $this->english = $this->fetchEnglishId($this->english);
-        $this->experience = $this->fetchExperienceId($this->experience);
-        $this->country = $this->fetchCountryId($this->country);
 
-        //upload file resume
-        $target_dir = 'C:/xampp/htdocs/joBBoard/uploads/resume/';
-        $target_file = $target_dir . basename($this->resume["name"]);
-        move_uploaded_file($this->resume["tmp_name"], $target_file);
+        if ($errors) {
+            $_SESSION["errors_signup_cand"] = $errors; 
 
-        //set default user photo
-        $user_photo = 'C:/xampp/htdocs/joBBoard/img/default_photo.png';
+            $signupData = [
+                "full_name" => $this->full_name,
+                "position" => $this->position,
+                "category" => $this->category,
+                "skills" => $this->skills,
+                "country" => $this->country,
+                "salary" => $this->salary,
+                "english" => $this->english,
+                "experience" => $this->experience
+            ];
+            $_SESSION["signup_data_cand"] = $signupData;
 
-        $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $this->category, $this->getRowSkills(), $this->country, $target_file, $user_photo, $this->salary, $this->english, $this->experience, "active");
-        $this->setUserContacts($_SESSION["user_id"], $this->full_name);
+            header("Location: ../candidate/signup_candidate.php"); 
+            die();
+        } else {
+            $this->category = $this->fetchCategoryId($this->category);
+            $this->english = $this->fetchEnglishId($this->english);
+            $this->experience = $this->fetchExperienceId($this->experience);
+            $this->country = $this->fetchCountryId($this->country);
+
+            //upload file resume
+            $target_dir = 'C:/xampp/htdocs/joBBoard/uploads/resume/';
+            $target_file = $target_dir . basename($this->resume["name"]);
+            move_uploaded_file($this->resume["tmp_name"], $target_file);
+
+            //set default user photo
+            $user_photo = 'C:/xampp/htdocs/joBBoard/img/default_photo.png';
+
+            $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $this->category, $this->getRowSkills(), $this->country, $target_file, $user_photo, $this->salary, $this->english, $this->experience, "active");
+            $this->setUserContacts($_SESSION["user_id"], $this->full_name);
+        }
     }
     
     private function isEmptySubmit() {

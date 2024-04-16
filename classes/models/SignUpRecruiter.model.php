@@ -74,4 +74,25 @@ class SignUpModelRecruiter extends Dbh{
         $stmt = null;
     }
 
+    protected function grabAllCountries() {             
+        //submit query to database without entered inform
+        $query = "SELECT country_name FROM countries;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../recruiter/signup_recruiter.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../recruiter/signup_recruiter.php?error=countriesnotfound");
+            exit();
+        }
+
+        $countriesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $countriesData;
+    }
 }

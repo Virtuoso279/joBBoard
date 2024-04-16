@@ -29,68 +29,74 @@ class ProfileContrCandidate extends ProfileModelCandidate{
 
     public function changeProfileInfo() {
         session_start();
+        $errors = [];
 
         if ($this->isEmptySubmit()) {
-            header("Location: ../candidate/profile_candidate.php?error=emptyinput");
-            exit();
+            $errors["emptyInput"] = "Fill in all fields!";
+            // header("Location: ../candidate/profile_candidate.php?error=emptyinput");
+            // exit();
         }       
 
         if ($this->isSalaryNotPositive()) {
-            header("Location: ../candidate/profile_candidate.php?error=salarynotpositive");
-            exit();
+            $errors["salaryNotPositive"] = "Salary must be positive number!";
         }
 
         if ($this->invalidStatus()) {
-            header("Location: ../candidate/profile_candidate.php?error=invalidstatus");
-            exit();
+            $errors["invalidStatus"] = "Invalid user status!";
         }
-        
-        $this->category = $this->fetchCategoryId($this->category);
-        $this->english = $this->fetchEnglishId($this->english);
-        $this->experience = $this->fetchExperienceId($this->experience);
-        $this->country = $this->fetchCountryId($this->country);
 
-        // check if resume was send
-        if ($this->isResumeExist() && basename($this->resume["name"]) == null) {
-            $profileInfo = $this->getUser($_SESSION["user_id"]);
-            $target_file_resume = $profileInfo[0]["resume_path"];
-        } elseif (!$this->isResumeExist() && basename($this->resume["name"]) == null) {
-            header("Location: ../candidate/profile_candidate.php?error=resumenotexist");
-            exit();            
-        } elseif (basename($this->resume["name"]) != null) {
-            // error handler
-            if ($this->invalidResumeFile()) {
-                header("Location: ../candidate/profile_candidate.php?error=invalidresumefile");
-                exit();
+        if ($errors) {
+            $_SESSION["errors_profile_cand"] = $errors; 
+            header("Location: ../candidate/profile_candidate.php"); 
+            die();
+        } else {
+            $this->category = $this->fetchCategoryId($this->category);
+            $this->english = $this->fetchEnglishId($this->english);
+            $this->experience = $this->fetchExperienceId($this->experience);
+            $this->country = $this->fetchCountryId($this->country);
+
+            // check if resume was send
+            if ($this->isResumeExist() && basename($this->resume["name"]) == null) {
+                $profileInfo = $this->getUser($_SESSION["user_id"]);
+                $target_file_resume = $profileInfo[0]["resume_path"];
+            } elseif (!$this->isResumeExist() && basename($this->resume["name"]) == null) {
+                header("Location: ../candidate/profile_candidate.php?error=resumenotexist");
+                exit();            
+            } elseif (basename($this->resume["name"]) != null) {
+                // error handler
+                if ($this->invalidResumeFile()) {
+                    header("Location: ../candidate/profile_candidate.php?error=invalidresumefile");
+                    exit();
+                }
+
+                //upload file resume
+                $target_dir_resume = 'C:/xampp/htdocs/joBBoard/uploads/resume/';
+                $target_file_resume = $target_dir_resume . basename($this->resume["name"]);
+                move_uploaded_file($this->resume["tmp_name"], $target_file_resume);
             }
 
-            //upload file resume
-            $target_dir_resume = 'C:/xampp/htdocs/joBBoard/uploads/resume/';
-            $target_file_resume = $target_dir_resume . basename($this->resume["name"]);
-            move_uploaded_file($this->resume["tmp_name"], $target_file_resume);
-        }
+            // check if photo was send
+            if (basename($this->photo["name"]) == null && !$this->isPhotoExist()) {
+                $target_file_photo = 'C:/xampp/htdocs/joBBoard/img/default_photo.png';
+            }
+            elseif (basename($this->photo["name"]) == null && $this->isPhotoExist()) {
+                $profileInfo = $this->getUser($_SESSION["user_id"]);
+                $target_file_photo = $profileInfo[0]["photo_path"];
+            } elseif (basename($this->photo["name"]) != null) {
+                // error handler
+                if ($this->invalidPhotoFile()) {
+                    header("Location: ../candidate/profile_candidate.php?error=invalidphotofile");
+                    exit();
+                }
 
-        // check if photo was send
-        if (basename($this->photo["name"]) == null && !$this->isPhotoExist()) {
-            $target_file_photo = 'C:/xampp/htdocs/joBBoard/img/default_photo.png';
-        }
-        elseif (basename($this->photo["name"]) == null && $this->isPhotoExist()) {
-            $profileInfo = $this->getUser($_SESSION["user_id"]);
-            $target_file_photo = $profileInfo[0]["photo_path"];
-        } elseif (basename($this->photo["name"]) != null) {
-            // error handler
-            if ($this->invalidPhotoFile()) {
-                header("Location: ../candidate/profile_candidate.php?error=invalidphotofile");
-                exit();
+                //upload file photo
+                $target_dir_photo = 'C:/xampp/htdocs/joBBoard/uploads/photo/';
+                $target_file_photo = $target_dir_photo . basename($this->photo["name"]);
+                move_uploaded_file($this->photo["tmp_name"], $target_file_photo);
             }
 
-            //upload file photo
-            $target_dir_photo = 'C:/xampp/htdocs/joBBoard/uploads/photo/';
-            $target_file_photo = $target_dir_photo . basename($this->photo["name"]);
-            move_uploaded_file($this->photo["tmp_name"], $target_file_photo);
+            $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $this->category, $this->getRowSkills(), $this->country, $target_file_resume, $target_file_photo, $this->salary, $this->english, $this->experience, $this->status);
         }
-
-        $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $this->category, $this->getRowSkills(), $this->country, $target_file_resume, $target_file_photo, $this->salary, $this->english, $this->experience, $this->status);
     }
     
     private function isEmptySubmit() {

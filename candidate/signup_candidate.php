@@ -8,10 +8,22 @@
     <img src="#" alt="logo">    
 </header>
 
+<?php
+    include "../classes/Dbh.php";
+    include "../classes/models/SignUpCandidate.model.php";
+    include "../classes/views/SignUpCandidate.view.php";
+
+    $signupCandObject = new SignUpViewCandidate();
+?>
+
 <section>
     <h3>Реєстрація кандидата</h3>
     <form action="../includes/signup_candidate.inc.php" method="post" enctype="multipart/form-data">
-        <label for="full_name">Введіть призвіще та ім’я:</label><br>
+        <?php 
+            $signupCandObject->signupCandidateInput();
+            $signupCandObject->checkSignupCandidateErrors();
+        ?>
+        <!-- <label for="full_name">Введіть призвіще та ім’я:</label><br>
         <input type="text" id="full_name" name="full_name" placeholder="Full name"><br>
         <label for="position">Введіть назву посади:</label><br>
         <input type="text" id="position" name="position" placeholder="Position"><br>
@@ -72,7 +84,7 @@
             <input type="radio" id="48" name="experience" value="48">
             <label for="48">Від 2 років до 4 років</label><br>
             <input type="radio" id="49" name="experience" value="49">
-            <label for="49">Від 4 років і більше</label><br>
+            <label for="49">Від 4 років і більше</label><br> -->
         <button>Зберегти дані</button>
     </form>
 </section>
