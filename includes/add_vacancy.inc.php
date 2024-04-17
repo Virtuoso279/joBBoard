@@ -31,7 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Redirect to vacancy page
-    header("Location: ../recruiter/my_vacancies.php?error=none");
+    header("Location: ../pages/add_vacancy.php?vacancy_id=" . $vacancyId);
 
 } else {
     header("Location: ../recruiter/my_vacancies.php");

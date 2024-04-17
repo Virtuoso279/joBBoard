@@ -35,4 +35,16 @@ class ContactsView extends ContactsModel{
         $profileInfo = $this->getContacts($userId, $userType);
         echo $profileInfo[0]["about_me"];
     }    
+
+    public function checkContactsErrors() {
+        if (isset($_SESSION["errors_contacts"])) {
+            $errors = $_SESSION["errors_contacts"];
+    
+            foreach ($errors as $error) {
+                echo '<p class="form-error">' . $error . '</p>';
+            }
+    
+            unset($_SESSION["errors_contacts"]);
+        }
+    }
 }

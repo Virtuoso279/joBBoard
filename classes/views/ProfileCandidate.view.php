@@ -178,4 +178,16 @@ class ProfileViewCandidate extends ProfileModelCandidate{
         $profileInfo = $this->getUser($userId);
         return $profileInfo[0]["user_status"];
     }
+
+    public function checkProfileCandidateErrors() {
+        if (isset($_SESSION["errors_profile_cand"])) {
+            $errors = $_SESSION["errors_profile_cand"];
+    
+            foreach ($errors as $error) {
+                echo '<p class="form-error">' . $error . '</p>';
+            }
+    
+            unset($_SESSION["errors_profile_cand"]);
+        }
+    }
 }

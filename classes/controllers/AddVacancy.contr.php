@@ -24,31 +24,39 @@ class AddVacancyContr extends AddVacancyModel{
     }
 
     public function addVacancy($vacancyId) {
+        session_start();
+        $errors = [];
+
         if ($this->isEmptySubmit()) {
-            header("Location: ../recruiter/my_vacancies.php?error=emptyinput");
-            exit();
+            $errors["emptyInput"] = "Fill in all fields!";
+            // header("Location: ../recruiter/my_vacancies.php?error=emptyinput");
+            // exit();
         }             
 
         if ($this->isSalaryNotPositive()) {
-            header("Location: ../recruiter/my_vacancies.php?error=salarynotpositive");
-            exit();
+            $errors["salaryNotPositive"] = "Salary must be positive number!";
         }
 
-        $this->category = $this->fetchCategoryId($this->category);
-        $this->english = $this->fetchEnglishId($this->english);
-        $this->experience = $this->fetchExperienceId($this->experience);
-        $this->country = $this->fetchCountryId($this->country);
-        $this->empl_type = $this->fetchEmplTypeId($this->empl_type);
-
-        session_start();
-        if (isset($_SESSION["user_id"])) {
-            $recruiterId = $_SESSION["user_id"];
-        }
-        
-        if ($vacancyId === "new vacancy") {
-            $this->createVacancy($recruiterId, $this->title, $this->description, $this->category, $this->getRowSkills(), $this->country, $this->english, $this->experience, $this->salary, $this->empl_type);
+        if ($errors) {
+            $_SESSION["errors_addvacancy"] = $errors; 
+            header("Location: ../pages/add_vacancy.php?vacancy_id=" . $vacancyId); 
+            die();
         } else {
-            $this->changeVacancy($vacancyId, $this->title, $this->description, $this->category, $this->getRowSkills(), $this->country, $this->english, $this->experience, $this->salary, $this->empl_type);
+            $this->category = $this->fetchCategoryId($this->category);
+            $this->english = $this->fetchEnglishId($this->english);
+            $this->experience = $this->fetchExperienceId($this->experience);
+            $this->country = $this->fetchCountryId($this->country);
+            $this->empl_type = $this->fetchEmplTypeId($this->empl_type);
+
+            if (isset($_SESSION["user_id"])) {
+                $recruiterId = $_SESSION["user_id"];
+            }
+            
+            if ($vacancyId === "new vacancy") {
+                $this->createVacancy($recruiterId, $this->title, $this->description, $this->category, $this->getRowSkills(), $this->country, $this->english, $this->experience, $this->salary, $this->empl_type);
+            } else {
+                $this->changeVacancy($vacancyId, $this->title, $this->description, $this->category, $this->getRowSkills(), $this->country, $this->english, $this->experience, $this->salary, $this->empl_type);
+            }
         }
     }
 

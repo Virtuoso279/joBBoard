@@ -329,4 +329,136 @@ class AddVacancyModel extends Dbh{
             exit();            
         } 
     }
+
+    protected function grabAllCategories() {             
+        //submit query to database without entered inform
+        $query = "SELECT category_name FROM categories;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=categoriesnotfound");
+            exit();
+        }
+
+        $categoryData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $categoryData;
+    }
+
+    protected function grabAllSkills() {             
+        //submit query to database without entered inform
+        $query = "SELECT skill_title FROM skills;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=skillsnotfound");
+            exit();
+        }
+
+        $skillsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $skillsData;
+    }
+
+    protected function grabAllCountries() {             
+        //submit query to database without entered inform
+        $query = "SELECT country_name FROM countries;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=countriesnotfound");
+            exit();
+        }
+
+        $countriesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $countriesData;
+    }
+
+    protected function grabAllEnglish() {             
+        //submit query to database without entered inform
+        $query = "SELECT level_lang FROM english;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=englishnotfound");
+            exit();
+        }
+
+        $englishData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $englishData;
+    }
+
+    protected function grabAllExperience() {             
+        //submit query to database without entered inform
+        $query = "SELECT months FROM experience;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=experiencenotfound");
+            exit();
+        }
+
+        $experienceData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $experienceData;
+    }
+
+    protected function grabAllEmplTypes() {             
+        //submit query to database without entered inform
+        $query = "SELECT employment_type FROM empltypes;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=empltypesnotfound");
+            exit();
+        }
+
+        $empltypesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $empltypesData;
+    }
 }

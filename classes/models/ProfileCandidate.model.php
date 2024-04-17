@@ -259,13 +259,13 @@ class ProfileModelCandidate extends Dbh{
 
         if (!$stmt->execute()) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/profile_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=categoriesnotfound");
+            header("Location: ../candidate/profile_candidate.php?error=categoriesnotfound");
             exit();
         }
 
@@ -281,13 +281,13 @@ class ProfileModelCandidate extends Dbh{
 
         if (!$stmt->execute()) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/profile_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=skillsnotfound");
+            header("Location: ../candidate/profile_candidate.php?error=skillsnotfound");
             exit();
         }
 
@@ -303,13 +303,13 @@ class ProfileModelCandidate extends Dbh{
 
         if (!$stmt->execute()) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/profile_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=countriesnotfound");
+            header("Location: ../candidate/profile_candidate.php?error=countriesnotfound");
             exit();
         }
 
@@ -325,13 +325,13 @@ class ProfileModelCandidate extends Dbh{
 
         if (!$stmt->execute()) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/profile_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=englishnotfound");
+            header("Location: ../candidate/profile_candidate.php?error=englishnotfound");
             exit();
         }
 
@@ -347,13 +347,13 @@ class ProfileModelCandidate extends Dbh{
 
         if (!$stmt->execute()) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=stmtfailed");
+            header("Location: ../candidate/profile_candidate.php?error=stmtfailed");
             exit();
         }
 
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            header("Location: ../candidate/signup_candidate.php?error=experiencenotfound");
+            header("Location: ../candidate/profile_candidate.php?error=experiencenotfound");
             exit();
         }
 

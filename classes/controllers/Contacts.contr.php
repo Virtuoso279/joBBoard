@@ -24,6 +24,8 @@ class ContactsContr extends ContactsModel{
     }
 
     public function changeContactsInfo() {
+        session_start();
+        $errors = [];
 
         if ($this->invalidUserType()) {
             header("Location: ../index.php?error=invalidusertype");
@@ -31,23 +33,28 @@ class ContactsContr extends ContactsModel{
         }
 
         if ($this->isEmptySubmit()) {
-            header("Location: ../pages/contacts.php?error=emptyinput");
-            exit();
+            $errors["emptyInput"] = "Fill in all fields!";
+            // header("Location: ../pages/contacts.php?error=emptyinput");
+            // exit();
         }  
         
         if ($this->invalidEmail()) {
-            header("Location: ../pages/contacts.php?error=invalidemail");
-            exit();
+            $errors["invalidEmail"] = "Invalid email entered!";
         } 
 
         if (!empty($this->phone)) {
             if ($this->invalidPhone()) {
-                header("Location: ../pages/contacts.php?error=invalidphone");
-                exit();
+                $errors["invalidPhone"] = "Invalid phone number entered!";
             }
-        }       
-
-        $this->setContacts($this->userId, $this->userType, $this->full_name, $this->aboutme, $this->email, $this->phone, $this->telegram, $this->linkedin, $this->projects);
+        }    
+        
+        if ($errors) {
+            $_SESSION["errors_contacts"] = $errors; 
+            header("Location: ../pages/contacts.php"); 
+            die();
+        } else {
+            $this->setContacts($this->userId, $this->userType, $this->full_name, $this->aboutme, $this->email, $this->phone, $this->telegram, $this->linkedin, $this->projects);
+        }
     }
 
     private function invalidUserType() {

@@ -36,6 +36,7 @@
         <input type="url" id="projects" name="projects" placeholder="Projects link" value="<?php $profileData->getLinks($_SESSION["user_id"], $_SESSION["user_type"]);?>"><br>    
         <label for="aboutme">Про мене:</label><br>
         <textarea name="aboutme" id="aboutme" rows="10" cols="50"><?php $profileData->getAboutMe($_SESSION["user_id"], $_SESSION["user_type"]);?></textarea><br>
+            <?php $profileData->checkContactsErrors(); ?>
         <button>Зберегти дані</button>
     </form>
 </section>

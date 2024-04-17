@@ -23,59 +23,66 @@ class ProfileContrRecruiter extends ProfileModelRecruiter{
 
     public function changeProfileInfo() {
         session_start();
+        $errors = [];
 
         if ($this->isEmptySubmit()) {
-            header("Location: ../recruiter/signup_recruiter.php?error=emptyinput");
-            exit();
+            $errors["emptyInput"] = "Fill in all fields!";
+            // header("Location: ../recruiter/signup_recruiter.php?error=emptyinput");
+            // exit();
         }      
         
         if ($this->invalidStatus()) {
-            header("Location: ../recruiter/signup_recruiter.php?error=invalidstatus");
-            exit();
+            $errors["invalidStatus"] = "Invalid user status!";
         }
         
-        $this->country = $this->fetchCountryId($this->country);  
-        
-        // check if photo was send
-        if (basename($this->photo["name"]) == null && !$this->isPhotoExist()) {
-            $target_file_photo = 'C:/xampp/htdocs/joBBoard/img/default_photo.png';
-        } elseif (basename($this->photo["name"]) == null && $this->isPhotoExist()) {
-            $profileInfo = $this->getUser($_SESSION["user_id"]);
-            $target_file_photo = $profileInfo[0]["my_photo"];
-        } elseif (basename($this->photo["name"]) != null) {
-            // error handler
-            if ($this->invalidPhotoFile()) {
-                header("Location: ../recruiter/signup_recruiter.php?error=invalidphotofile");
-                exit();
+        if ($errors) {
+            $_SESSION["errors_profile_recr"] = $errors; 
+            header("Location: ../recruiter/profile_recruiter.php"); 
+            die();
+        } else {
+            $this->country = $this->fetchCountryId($this->country);  
+            
+            // check if photo was send
+            if (basename($this->photo["name"]) == null && !$this->isPhotoExist()) {
+                $target_file_photo = 'C:/xampp/htdocs/joBBoard/img/default_photo.png';
+            } elseif (basename($this->photo["name"]) == null && $this->isPhotoExist()) {
+                $profileInfo = $this->getUser($_SESSION["user_id"]);
+                $target_file_photo = $profileInfo[0]["my_photo"];
+            } elseif (basename($this->photo["name"]) != null) {
+                // error handler
+                if ($this->invalidPhotoFile()) {
+                    header("Location: ../recruiter/profile_recruiter.php?error=invalidphotofile");
+                    exit();
+                }
+
+                //upload file photo
+                $target_dir_photo = 'C:/xampp/htdocs/joBBoard/uploads/photo/';
+                $target_file_photo = $target_dir_photo . basename($this->photo["name"]);
+                move_uploaded_file($this->photo["tmp_name"], $target_file_photo);
             }
 
-            //upload file photo
-            $target_dir_photo = 'C:/xampp/htdocs/joBBoard/uploads/photo/';
-            $target_file_photo = $target_dir_photo . basename($this->photo["name"]);
-            move_uploaded_file($this->photo["tmp_name"], $target_file_photo);
-        }
+            // check if logo was send
+            if (basename($this->logo["name"]) == null && !$this->isLogoExist()) {
+                $target_file_logo = 'C:/xampp/htdocs/joBBoard/img/default_logo.png';
+            }
+            elseif (basename($this->logo["name"]) == null && $this->isLogoExist()) {
+                $profileInfo = $this->getUser($_SESSION["user_id"]);
+                $target_file_logo = $profileInfo[0]["company_photo"];
+            } elseif (basename($this->logo["name"]) != null) {
+                // error handler
+                if ($this->invalidLogoFile()) {
+                    header("Location: ../candidate/profile_recruiter.php?error=invalidlogofile");
+                    exit();
+                }
 
-        // check if logo was send
-        if (basename($this->logo["name"]) == null && !$this->isLogoExist()) {
-            $target_file_logo = 'C:/xampp/htdocs/joBBoard/img/default_logo.png';
-        }
-        elseif (basename($this->logo["name"]) == null && $this->isLogoExist()) {
-            $profileInfo = $this->getUser($_SESSION["user_id"]);
-            $target_file_logo = $profileInfo[0]["company_photo"];
-        } elseif (basename($this->logo["name"]) != null) {
-            // error handler
-            if ($this->invalidLogoFile()) {
-                header("Location: ../candidate/profile_candidate.php?error=invalidlogofile");
-                exit();
+                //upload file logo
+                $target_dir_logo = 'C:/xampp/htdocs/joBBoard/uploads/logo/';
+                $target_file_logo = $target_dir_logo . basename($this->logo["name"]);
+                move_uploaded_file($this->logo["tmp_name"], $target_file_logo);
             }
 
-            //upload file logo
-            $target_dir_logo = 'C:/xampp/htdocs/joBBoard/uploads/logo/';
-            $target_file_logo = $target_dir_logo . basename($this->logo["name"]);
-            move_uploaded_file($this->logo["tmp_name"], $target_file_logo);
+            $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $target_file_photo, $this->company, $this->description, $target_file_logo, $this->country, $this->status);
         }
-
-        $this->setUser($_SESSION["user_id"], $this->full_name, $this->position, $target_file_photo, $this->company, $this->description, $target_file_logo, $this->country, $this->status);
     }
     
     private function isEmptySubmit() {

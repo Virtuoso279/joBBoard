@@ -21,11 +21,11 @@
         <input type="text" id="position" name="position" placeholder="Position" value="<?php $profileData->getPosition($_SESSION["user_id"]);?>"><br>
         <label for="category">Категорія (сфера):</label><br>      
         <select name="category" id="category" size="1">
-            <?php $profileData->getCategories($_SESSION["user_id"]) ?>
+            <?php $profileData->getCategories($_SESSION["user_id"]); ?>
         </select><br>
         <label for="skills">Мої навички:</label><br>        
         <select name="skills[]" id="skills" multiple>
-            <?php $profileData->getSkills($_SESSION["user_id"]) ?>
+            <?php $profileData->getSkills($_SESSION["user_id"]); ?>
         </select><br>
         <label for="resume">Завантажте файл резюме:</label><br>
         <input type="file" id="resume" name="resume"><br>
@@ -35,12 +35,14 @@
         <input type="number" id="salary" name="salary" placeholder="Salary" value="<?php $profileData->getSalary($_SESSION["user_id"]);?>"><br>
         <label for="country">Країна перебування:</label><br>        
         <select name="country" id="country" size="1">
-            <?php $profileData->getCountries($_SESSION["user_id"]) ?>
+            <?php $profileData->getCountries($_SESSION["user_id"]); ?>
         </select><br>
         <p>Рівень англійської:</p>
-            <?php $profileData->getEnglish($_SESSION["user_id"]) ?>
+            <?php $profileData->getEnglish($_SESSION["user_id"]); ?>
         <p>Досвід роботи:</p>
-            <?php $profileData->getExperience($_SESSION["user_id"]) ?>
+        <?php $profileData->getExperience($_SESSION["user_id"]);
+        $profileData->checkProfileCandidateErrors();
+        ?>        
         <button>Зберегти дані</button>
     </form>
 </section>
