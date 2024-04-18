@@ -39,8 +39,27 @@ class AddVacancyContr extends AddVacancyModel{
 
         if ($errors) {
             $_SESSION["errors_addvacancy"] = $errors; 
-            header("Location: ../pages/add_vacancy.php?vacancy_id=" . $vacancyId); 
-            die();
+
+            if ($vacancyId === "new vacancy") {
+                $vacancyData = [
+                    "title" => $this->title,
+                    "description" => $this->description,
+                    "category" => $this->category,
+                    "skills" => $this->skills,
+                    "country" => $this->country,
+                    "salary" => $this->salary,
+                    "english" => $this->english,
+                    "experience" => $this->experience,
+                    "empl_type" => $this->empl_type
+                ];
+                $_SESSION["vacancy_data"] = $vacancyData;
+                
+                header("Location: ../pages/add_vacancy.php"); 
+                die();
+            } else {
+                header("Location: ../pages/add_vacancy.php?vacancy_id=" . $vacancyId); 
+                die();
+            }
         } else {
             $this->category = $this->fetchCategoryId($this->category);
             $this->english = $this->fetchEnglishId($this->english);

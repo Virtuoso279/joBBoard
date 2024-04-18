@@ -3,13 +3,13 @@ session_start();
 
 require_once "../recruiter/header_recruiter.php";
 
+include "../classes/models/AddVacancy.model.php";
+include "../classes/controllers/AddVacancy.contr.php";
+include "../classes/views/AddVacancy.view.php";
+
+$vacancyObject = new AddVacancyView();
+
 if (isset($_GET["vacancy_id"])) {
-
-    include "../classes/models/AddVacancy.model.php";
-    include "../classes/controllers/AddVacancy.contr.php";
-    include "../classes/views/AddVacancy.view.php";
-
-    $vacancyObject = new AddVacancyView();
 
     $vacancy = $vacancyObject->getVacancy($_GET["vacancy_id"]); 
     $vacancy = $vacancy[0]; 
@@ -43,8 +43,8 @@ if (isset($_GET["vacancy_id"])) {
                 <?php $vacancyObject->getEnglishList($vacancy); ?>
             <p>Досвід роботи:</p>
             <?php $vacancyObject->getExperienceList($vacancy); 
-            $vacancyObject->checkAddVacancyErrors();?>      
-            <button>Зберегти дані</button>
+                $vacancyObject->checkAddVacancyErrors();?>      
+            <input type="submit" value="Зберегти дані">
         </form>
     </section>
     <a href="../includes/delete_vacancy.inc.php?vacancy_id=<?php echo $_GET["vacancy_id"]; ?>">Деактивувати вакансію</a>
@@ -55,10 +55,22 @@ if (isset($_GET["vacancy_id"])) {
         <h3>Створення вакансії</h3>
         <form action="../includes/add_vacancy.inc.php" method="post">
             <label for="title">Назва вакансії:</label><br>
-            <input type="text" id="title" name="title" placeholder="Title"><br>
+            <?php 
+                if (isset($_SESSION["vacancy_data"]["title"])) {
+                    echo '<input type="text" id="title" name="title" placeholder="Title" value="' . $_SESSION["vacancy_data"]["title"] . '"><br>';
+                } else {
+                    echo '<input type="text" id="title" name="title" placeholder="Title"><br>';
+                }
+            ?>
             <label for="description">Опис вакансії:</label><br>
-            <textarea name="description" id="description" rows="20" cols="100" placeholder="Description"></textarea><br>
-            <label for="category">Категорія (сфера):</label><br>      
+            <?php 
+                if (isset($_SESSION["vacancy_data"]["description"])) {
+                    echo '<textarea name="description" id="description" rows="20" cols="100" placeholder="Description">'. $_SESSION["vacancy_data"]["description"] . '</textarea><br>';
+                } else {
+                    echo '<textarea name="description" id="description" rows="20" cols="100" placeholder="Description"></textarea><br>';
+                }
+            ?>
+            <label for="category">Категорія (сфера):</label><br>  
             <select name="category" id="category" size="1">
                 <?php $vacancyObject->getCategoryList("emptyVacancy"); ?>
             </select><br>
@@ -71,7 +83,13 @@ if (isset($_GET["vacancy_id"])) {
                 <?php $vacancyObject->getEmplTypeList("emptyVacancy"); ?>
             </select><br>
             <label for="salary">Зарплатні очікування в $:</label><br>
-            <input type="number" id="salary" name="salary" placeholder="Salary"><br>
+            <?php 
+                if (isset($_SESSION["vacancy_data"]["salary"]) && !isset($_SESSION["errors_addvacancy"]["salaryNotPositive"])) {
+                    echo '<input type="number" id="salary" name="salary" placeholder="Salary" value="' . $_SESSION["vacancy_data"]["salary"] . '"><br>';
+                } else {
+                    echo '<input type="number" id="salary" name="salary" placeholder="Salary"><br>';
+                }
+            ?>
             <label for="skills">Оберіть навички:</label><br>        
             <select name="skills[]" id="skills" multiple>
                 <?php $vacancyObject->getSkillsList("emptyVacancy"); ?>
@@ -80,8 +98,8 @@ if (isset($_GET["vacancy_id"])) {
                 <?php $vacancyObject->getEnglishList("emptyVacancy"); ?>
             <p>Досвід роботи:</p>
             <?php $vacancyObject->getExperienceList("emptyVacancy"); 
-            $vacancyObject->checkAddVacancyErrors(); ?>        
-            <button>Зберегти дані</button>
+                $vacancyObject->checkAddVacancyErrors(); ?>        
+            <input type="submit" value="Зберегти дані">
         </form>
     </section>
     <a href="../recruiter/my_vacancies.php">Скасувати</a>

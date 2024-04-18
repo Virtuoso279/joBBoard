@@ -19,6 +19,7 @@ $vacancies = new AllVacanciesView();
 if (isset($_GET["vacancy_id"])) {
     $vacancy = $vacancies->getVacancy($_GET["vacancy_id"]); 
     $vacancy = $vacancy[0]; 
+    $vacancies->setResponseAmount($vacancy["id"]);
 ?>
 
     <h3>Вакансії</h3>

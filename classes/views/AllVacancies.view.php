@@ -89,5 +89,75 @@ class AllVacanciesView extends AllVacanciesModel {
         $status = $vacancy["vacancy_status"] === "active" ? "Активна" : "Неактивна";
         return $status;
     }
+
+    public function setResponseAmount($vacancyId) {
+        $this->setResponses($vacancyId);
+    }
+
+    public function getCategoriesList() {
+        $categoriesList = $this->grabAllCategories();
+        foreach ($categoriesList as $category) {
+            echo '<option value="' . $category["category_name"] . '">' . $category["category_name"] . '</option>';
+        }
+    }
+
+    public function getCountriesList() {
+        $countriesList = $this->grabAllCountries();
+        foreach ($countriesList as $country) {
+            echo '<option value="' . $country["country_name"] . '">' . $country["country_name"] . '</option>';
+        }
+    }
+
+    public function getExperienceList() {
+        $experienceList = $this->grabAllExperience();
+        foreach ($experienceList as $experience) {
+            switch ($experience["months"]) {
+                case '1':
+                    echo '<input type="radio" id="1" name="experience" value="1">';
+                    echo '<label for="1">Без досвіду</label><br>';
+                    break;
+
+                case '6':
+                    echo '<input type="radio" id="6" name="experience" value="6">';
+                    echo '<label for="6">Менше 6 місяців</label><br>';
+                    break;
+
+                case '12':
+                    echo '<input type="radio" id="12" name="experience" value="12">';
+                    echo '<label for="12">Від 6 до 12 місяців</label><br>';
+                    break;
+
+                case '24':
+                    echo '<input type="radio" id="24" name="experience" value="24">';
+                    echo '<label for="24">Від 1 року до 2 років</label><br>';
+                    break;
+
+                case '48':
+                    echo '<input type="radio" id="48" name="experience" value="48">';
+                    echo '<label for="48">Від 2 років до 4 років</label><br>';
+                    break;
+
+                case '49':
+                    echo '<input type="radio" id="49" name="experience" value="49">';
+                    echo '<label for="49">Від 4 років і більше</label><br>';
+                    break;
+            }
+        }
+    }
+
+    public function getEnglishList() {
+        $englishList = $this->grabAllEnglish();
+        foreach ($englishList as $english) {
+            echo '<input type="radio" id="' . $english["level_lang"] . '" name="english" value="' . $english["level_lang"] . '">';  
+            echo '<label for="' . $english["level_lang"] . '">' . $english["level_lang"] . '</label><br>'; 
+        }
+    }  
+
+    public function getEmplTypesList() {
+        $emplTypesList = $this->grabAllEmplTypes();
+        foreach ($emplTypesList as $emplType) {
+            echo '<option value="' . $emplType["employment_type"] . '">' . $emplType["employment_type"] . '</option>';
+        }
+    }
 }
 
