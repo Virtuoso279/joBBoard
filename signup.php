@@ -23,12 +23,6 @@
                 $signupObject->signupInput();
                 $signupObject->checkSignupErrors();
             ?>
-            <!-- <input type="text" name="email" placeholder="Email">
-            <input type="password" name="pwd" placeholder="Password">
-            <input type="radio" id="recruiter" name="userType" value="recruiter">
-            <label for="recruiter">Я роботодавець</label>
-            <input type="radio" id="candidate" name="userType" value="candidate">
-            <label for="candidate">Я кандидат</label> -->
             <button>Далі</button>
         </form>
     </section>

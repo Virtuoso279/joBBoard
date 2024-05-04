@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="http://localhost/joBBoard/styles/recruiter/signup_recruiter.css">
     <title>joBBoard</title>
 </head>
 <body>
 <header>
-    <img src="#" alt="logo">    
+    <img src="http://localhost/joBBoard/uploads/images/logoWebsite.png" width="115" height="48" alt="logo">    
+    <hr>    
 </header>
 
 <?php
@@ -16,13 +18,15 @@
     $signupRecrObject = new SignUpViewRecruiter();
 ?>
 
-<section>
+<section class="main">
     <h3>Реєстрація роботодавця</h3>
     <form action="../includes/signup_recruiter.inc.php" method="post">
         <?php 
             $signupRecrObject->signupRecruiterInput();
             $signupRecrObject->checkSignupRecruiterErrors();
         ?>
+        <button>Зберегти дані</button>
+        </div>
         <!-- <label for="full_name">Введіть призвіще та ім’я:</label><br>
         <input type="text" id="full_name" name="full_name" placeholder="Full name"><br>
         <label for="position">Введіть назву своєї посади:</label><br>
@@ -42,12 +46,8 @@
         <label for="description">Опис компанії:</label><br>
         <textarea name="description" id="description" rows="10" cols="50" placeholder="Description"></textarea><br> -->
         <!-- <input type="text" id="description" name="description" placeholder="Description"><br> -->
-        <button>Зберегти дані</button>
+        <!-- <button>Зберегти дані</button> -->
     </form>
-</section>
-
-<section>
-    <a href="../includes/delete_user.inc.php">Скасувати</a>
 </section>
 
 <?php
