@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #E8E6E6;
+    font-size: 18px;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+p {
+    margin: 0;
+}
+
+.input-text {
+    padding: 20px 25px;
+    border-radius: 5px;
+    font-size: 18px;
+    border: 1px solid black;
+    width: 100%;
+    max-width: 308px;
+}
+
+button {
+    padding: 20px 150px;
+    background-color: black;
+    font-size: 18px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 360px;
+}
+
+a {
+    display: inline-block;
+    padding: 20px 150px;
+    background-color: black;
+    font-size: 18px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none
+}
+
+button:hover, a:hover {
+    background-color: #5B5656;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 215px;
+    padding: 130px 0 130px 0;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.second {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.user-type {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.user-type-input input {
+    margin-right: 16px;
+    width: 16px; 
+    height: 16px;
+}
+
+.form-error {
+    color: red;
+}
