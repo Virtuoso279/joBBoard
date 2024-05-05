@@ -76,7 +76,7 @@ class AllVacanciesView extends AllVacanciesModel {
     }
 
     public function getDescription($vacancy) {
-        $description = substr($vacancy["vacancy_descr"], 0, 50);
+        $description = substr($vacancy["vacancy_descr"], 0, 400);
         return $description;
     }
 
