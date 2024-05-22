@@ -20,6 +20,9 @@
 
 textarea {
     height: 400px;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    padding: 20px;
 }
 
 .input-text {

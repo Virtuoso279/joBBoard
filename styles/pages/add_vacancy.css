@@ -1,45 +1,33 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #E8E6E6;
-    font-size: 18px;
-}
-
-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 50px;
-}
-
 .main {
-    margin-top: 55px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    gap: 45px;
 }
 
-form {
+.input-block {
     margin: 70px 0 140px 0;
     display: flex;
-    gap: 180px;
+    gap: 500px;
 }
 
 .input-text {
-    padding: 20px 25px;
+    padding: 20px;
     border-radius: 5px;
     font-size: 18px;
     border: 1px solid black;
-    width: 100%;
-    max-width: 308px;
-    margin-top: 12px;
+    width: 1140px;
+    margin: 12px 0 40px 0;
 }
 
-textarea {
-    height: 400px;
-    font-family: Arial, sans-serif;
-    font-size: 18px;
+.input-salary {
     padding: 20px;
+    border-radius: 5px;
+    font-size: 18px;
+    border: 1px solid black;
+    margin-top: 12px;
+    width: 360px;
 }
 
 select{
@@ -51,7 +39,7 @@ select{
     margin-top: 12px;
 }
 
-button {
+.input-submit {
     padding: 20px 120px;
     background-color: black;
     font-size: 18px;
@@ -62,7 +50,7 @@ button {
     width: 360px;
 }
 
-a {
+.link-button {
     display: inline-block;
     padding: 20px 120px;
     background-color: #fff;
@@ -71,17 +59,29 @@ a {
     border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
-    text-decoration: none
+    text-decoration: none;
+    margin: 30px 0 0 210px;
 }
 
-button:hover, a:hover {
+.input-submit:hover, .link-button:hover {
     background-color: #5B5656;
+}
+
+.radio-input {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.radio-input-element input {
+    margin-right: 16px;
+    width: 16px; 
+    height: 16px;
 }
 
 .left-column, .right-column {
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     gap: 40px;
 }
 

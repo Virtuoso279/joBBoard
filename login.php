@@ -7,12 +7,14 @@
 <body>
 <header>
     <img src="http://localhost/joBBoard/uploads/images/logoWebsite.png" width="115" height="48" alt="logo">    
-    <hr>
 </header>
 
 <?php 
     include "classes/views/Login.view.php"; 
 ?>
+
+<hr>
+
 <section class="main">
     <section class="login">
         <h3>Вхід в акаунт</h3>

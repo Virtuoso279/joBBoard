@@ -31,6 +31,7 @@ form {
     border: 1px solid black;
     width: 100%;
     max-width: 308px;
+    margin-top: 12px;
 }
 
 select{
@@ -39,6 +40,7 @@ select{
     font-size: 18px;
     border: 1px solid black;
     width: 360px;
+    margin-top: 12px;
 }
 
 .resume-input {

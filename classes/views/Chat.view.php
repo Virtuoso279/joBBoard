@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 class ChatView extends ChatModel {
 
     public function getChat($chatId) {
