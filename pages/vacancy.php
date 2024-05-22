@@ -43,7 +43,7 @@ if (isset($_GET["vacancy_id"])) {
                 </div>
             </div>
             <hr>
-            <p><?php echo $vacancy["vacancy_descr"]; ?></p>
+            <p><?php echo nl2br($vacancy["vacancy_descr"]); ?></p>
         </div>
             
         <div class="vacancy-features">
