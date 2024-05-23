@@ -28,7 +28,7 @@
             <a href="../pages/all_vacancies.php" class="all-vacancy-nav">Всі вакансії</a>
             <?php
                 if (isset($_SESSION["user_type"]) && $_SESSION["user_type"] === "candidate") {
-                    echo '<a href="#">Рекомендовані вакансії</a>';
+                    echo '<a href="../candidate/recommended_vacancies.php">Рекомендовані вакансії</a>';
                 } elseif (isset($_SESSION["user_type"]) && $_SESSION["user_type"] === "recruiter") {
                     echo '<a href="../recruiter/my_vacancies.php">Мої вакансії</a>';
                 }

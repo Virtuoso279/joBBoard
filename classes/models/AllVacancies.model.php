@@ -92,6 +92,48 @@ class AllVacanciesModel extends Dbh{
         }
     }
 
+    protected function grabVacanciesByCategory($categoryId) {             
+        //submit query to database without entered inform
+        $query = "SELECT * FROM vacancies WHERE category_id = ? AND vacancy_status = 'active';";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$categoryId])) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            return "Empty list";
+        } else {
+            $vacanciesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $vacanciesData;
+        }
+    }
+
+    protected function getCategoryIdUser($userId) {             
+        //submit query to database without entered inform
+        $query = "SELECT category_id FROM candidates WHERE id = ?;";  
+
+        $stmt = $this->connect()->prepare($query);
+
+        if (!$stmt->execute([$userId])) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            header("Location: ../pages/all_vacancies.php?error=categorynotfound");
+            exit();
+        }
+
+        $categoryData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $categoryData;
+    }
+
     protected function getCategoryId($category) {             
         //submit query to database without entered inform
         $query = "SELECT id FROM categories WHERE category_name = ?;";  

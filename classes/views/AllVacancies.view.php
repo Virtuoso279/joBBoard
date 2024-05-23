@@ -17,6 +17,12 @@ class AllVacanciesView extends AllVacanciesModel {
         return $vacanciesData;
     }
 
+    public function getRecommendedVacancies($candidateId) {
+        $allVacanciesObject = new AllVacanciesContr(0, 0, 0, 0, 0, 0);
+        $vacanciesData = $allVacanciesObject->checkRecommendedVacancies($candidateId);
+        return $vacanciesData;
+    }
+
     public function getCategory($vacancy) {
         $categoryName = $this->getCategoryName($vacancy["category_id"]);
         return $categoryName[0]["category_name"];

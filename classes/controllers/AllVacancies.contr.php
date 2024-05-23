@@ -146,4 +146,45 @@ class AllVacanciesContr extends AllVacanciesModel{
                 exit();
         }
     }
+
+    public function checkRecommendedVacancies($userId) {
+        $categoryData = $this->getCategoryIdUser($userId);
+        $categoryId = $categoryData[0]["category_id"];
+
+        $vacanciesCategory = $this->grabVacanciesByCategory($categoryId);
+
+        if ($vacanciesCategory === "Empty list") {
+            return $vacanciesCategory;
+        } else {
+            $categoryName = $this->getCategoryName($categoryId);
+            $pattern = "/" . $categoryName[0]["category_name"] . "/i";
+
+            $count = 0;
+            $resultVacancies = [];
+            foreach ($vacanciesCategory as $vacancy) {
+                $title = $vacancy["title"];
+                $description = $vacancy["vacancy_descr"];
+
+                if (preg_match($pattern, $title) == 1) {
+                    $count++;
+                }
+
+                if (preg_match($pattern, $description) == 1) {
+                    $count++;
+                }
+
+                if ($count === 2) {
+                    $resultVacancies[] = $vacancy;
+                }
+
+                $count = 0;
+            }
+
+            if (count($resultVacancies) > 0) {
+                return $resultVacancies;
+            } else {
+                return "Empty list";
+            }
+        }
+    }
 }
