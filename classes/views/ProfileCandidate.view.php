@@ -1,6 +1,11 @@
 <?php
 
 class ProfileViewCandidate extends ProfileModelCandidate{
+    public function getCandidateInfo(string $userId) {
+        $profileInfo = $this->getUser($userId);
+        return $profileInfo[0];
+    }
+
     public function getFullName($userId) {
         $profileInfo = $this->getUser($userId);
         echo $profileInfo[0]["full_name"];

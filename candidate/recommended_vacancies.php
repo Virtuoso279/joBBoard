@@ -6,6 +6,7 @@
     include "../classes/models/AllVacancies.model.php";
     include "../classes/controllers/AllVacancies.contr.php";
     include "../classes/views/AllVacancies.view.php";
+    include "../classes/KNNService.php";
 ?>
 
 <head>
@@ -24,8 +25,14 @@
     <section class="vacancy_list">
     <?php
         $vacancies = new AllVacanciesView();
+        $profileData = new ProfileViewCandidate();
+        $kNNService = new KNNService();
+
         if (isset($_SESSION["user_id"])) {
-            $result = $vacancies->getRecommendedVacancies($_SESSION["user_id"]);
+            $allVacancies = $vacancies->getAllVacancies();
+            $candidateInfo = $profileData->getCandidateInfo($_SESSION["user_id"]);
+
+            $result = $kNNService->findBestVacancies($allVacancies, $candidateInfo);
         } else {
             header("Location: ../index.php?error=invalid_userid");
             exit();
@@ -36,6 +43,11 @@
         } else {
             $vacanciesArray = $result;
             foreach ($vacanciesArray as $vacancy) { 
+                if ($vacancy['similarity'] <= 0.5) {
+                    continue;
+                }
+
+                $vacancy = $vacancy['vacancy'];
                 $vacancies->setResponseAmount($vacancy["id"]);
                 ?>
                 <div class="vacancy-item">
