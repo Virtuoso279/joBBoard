@@ -107,7 +107,12 @@
             }
 
             if (isset($vacanciesArray)) {
+                $counter = 0;
                 foreach ($vacanciesArray as $vacancy) { 
+                    $counter++;
+                    if ($counter > 5) {
+                        break;
+                    }
                     $vacancies->setResponseAmount($vacancy["id"]);
                     ?>
                     <div class="vacancy-item">

@@ -30,7 +30,7 @@ class AllVacanciesModel extends Dbh{
 
     protected function grabAllVacancies() {             
         //submit query to database without entered inform
-        $query = "SELECT * FROM vacancies WHERE vacancy_status = 'active' ORDER BY created_at DESC LIMIT 5;";  
+        $query = "SELECT * FROM vacancies WHERE vacancy_status = 'active' ORDER BY created_at DESC;";  
 
         $stmt = $this->connect()->prepare($query);
 
